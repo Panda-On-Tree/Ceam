@@ -54,7 +54,7 @@ function CeamRoster() {
     console.log(data);
     axios({
       method: 'post',
-      url: `http://192.168.0.126:8080/v1/api/mhere/get-roster`,
+      url: `https://internal.microtek.tech:8443/v1/api/mhere/get-roster`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -84,7 +84,7 @@ function CeamRoster() {
     console.log(data);
     axios({
       method: 'post',
-      url: `http://192.168.0.126:8080/v1/api/mhere/get-ot-roster`,
+      url: `https://internal.microtek.tech:8443/v1/api/mhere/get-ot-roster`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -122,7 +122,7 @@ function CeamRoster() {
     console.log(data);
     axios({
       method: 'post',
-      url: `http://192.168.0.126:8080/v1/api/mhere/upload-ot-roster`,
+      url: `https://internal.microtek.tech:8443/v1/api/mhere/upload-ot-roster`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -148,7 +148,7 @@ function CeamRoster() {
     console.log(data);
     axios({
       method: 'post',
-      url: `http://192.168.0.126:8080/v1/api/mhere/upload-roster`,
+      url: `https://internal.microtek.tech:8443/v1/api/mhere/upload-roster`,
       headers: {
         'Content-Type': 'application/json',
       },
