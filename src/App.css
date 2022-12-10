@@ -16,3 +16,11 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
+
+  button{
+    cursor: pointer;
+  }
+
+.custom-file-input{
+  margin-top: 20px;
+}

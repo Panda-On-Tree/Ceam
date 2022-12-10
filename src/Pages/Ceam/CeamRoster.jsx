@@ -1,24 +1,27 @@
 import React, { useState } from 'react'
 import { ReactSpreadsheetImport } from "react-spreadsheet-import";
 import './Ceam.css';
-import { SlButton, SlDialog,SlMenuItem, SlSelect } from '@shoelace-style/shoelace/dist/react/index.js';
+import { SlButton, SlDialog,SlInput,SlMenuItem, SlSelect } from '@shoelace-style/shoelace/dist/react/index.js';
 import thirtyonedays from './templates/31daysTemplate.xlsx'
 import thirtydays from './templates/30daysTemplate.xlsx'
 import twentyeightdays from './templates/28daysTemplate.xlsx'
 import twentyninedays from './templates/9daysTemplate.xlsx'
 import axios from 'axios'
 import MUIDataTable from 'mui-datatables'
-
+import * as xlsx from 'xlsx';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function CeamRoster() {
 
+  let navigate = useNavigate()
+
   const [open, setOpen] = useState(false)
   const [openOT, setOpenOT] = useState(false)
-
+  const [file, setFile] = useState()
   const [rosterData, setRosterData] = useState()
   const [rosterDataOT, setRosterDataOT] = useState()
-  const [uploadDateData, setUploadDateData] = useState('2022-10')
+  const [uploadDateData, setUploadDateData] = useState('')
   const [uploadMonth, setUploadMonth] = useState('2022-10')
   const [uploadYear, setUploadYear] = useState()
   const [openUpload, setOpenUpload] = useState(false)
@@ -27,19 +30,23 @@ function CeamRoster() {
   const [href, setHref] = useState()
   const [downMonth, setDownMonth] = useState('2022-02')
   const [col, setCol] = useState()
-  const [month, setMonth] =useState('2022-11')
+  const [month, setMonth] =useState('2022-12')
 
 
   useEffect(()=>{
     getRoster()
-    getRosterOT()
+   // getRosterOT()
   },[month])
 
 
   const options = {
     tableBodyMaxHeight: '64vh',
     responsive: 'standard',
-    selectableRowsHideCheckboxes: true,
+    onRowSelectionChange: (allRowsSelected)=>{
+        console.log(allRowsSelected);
+            
+    },
+    
 }
 
 
@@ -138,12 +145,12 @@ function CeamRoster() {
 
   }
 
-  function onSubmit(dataone){
-    console.log(dataone.all);
+  function onSubmit(){
+   
     const data = {
       month:uploadMonth,
       year:uploadYear,
-      roster_data: dataone.all
+      roster_data: file
     }
     console.log(data);
     axios({
@@ -212,6 +219,23 @@ function CeamRoster() {
 };
 
 
+const readUploadFile = (e) => {
+  e.preventDefault()
+  if (e.target.files) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+          const data = e.target.result
+          const workbook = xlsx.read(data, { type: 'array' })
+          const sheetName = workbook.SheetNames[0]
+          const worksheet = workbook.Sheets[sheetName]
+          const json = xlsx.utils.sheet_to_json(worksheet)
+          console.log(json)
+          setFile(json)
+      }
+      reader.readAsArrayBuffer(e.target.files[0])
+  }
+}
+
 
   return (
     <div className="ceam-roster-main">
@@ -228,39 +252,38 @@ function CeamRoster() {
             name=""
             id=""
         />
+         <SlButton variant="danger" className="logout-buuton" onClick={()=>{
+            localStorage.clear()
+            navigate("/login")
+        }}>Logout</SlButton>
     </div>
     <div className="ceam-file-main">
-      <button className='open-roster-download' onClick={()=>{
-        setSelectMonth(true)
-      }}>
-      Download Roster Template
-      </button>
-      <button className='open-roster-upload' onClick={()=>{
+      <SlButton variant="primary" onClick={()=>{
+          setSelectMonth(true)
+        }}> Download Roster Template</SlButton>
+      <SlButton variant="primary" onClick={()=>{
         setOpenUpload(true)
-      }}>
-        Upload New Roster
-      </button>
-      <button className='open-roster-upload' onClick={()=>{
-        setOpenUploadOT(true)
-      }}>
-        Upload OT Roster
-      </button>
+        }}> Upload New Roster</SlButton>
+      
+      <SlButton variant="primary" onClick={()=>{
+          navigate("/ot-roster")
+        }}>GO to OT Roster</SlButton>
     </div>
    <div className='table-ceam'>
    <MUIDataTable
-                    title="Shift Roster"  
-                    data={rosterData}
-                    columns={col}
-                    options={options}
-                ></MUIDataTable>
-    <div className='ot-roster-table-main'>
+      title="Shift Roster"  
+      data={rosterData}
+      columns={col}
+      options={options}
+  ></MUIDataTable>
+  {/*   <div className='ot-roster-table-main'>
                <MUIDataTable
                     title="Over Time Roster"  
                     data={rosterDataOT}
                     columns={col}
                     options={options}
                 ></MUIDataTable>
-    </div>
+    </div> */}
     
    </div>
    <ReactSpreadsheetImport isOpen={open} onClose={onClose} onSubmit={onSubmit} fields={fields} />
@@ -309,7 +332,6 @@ function CeamRoster() {
             id=""
         />
         <SlButton slot="footer" variant="success" onClick={() => {
-          setOpenOT(true)
           setOpenUploadOT(false)
         }}>
           Next
@@ -319,24 +341,26 @@ function CeamRoster() {
         </SlButton>
       </SlDialog>
     <SlDialog label="Upload Roster" open={openUpload} onSlAfterHide={() => setOpenUpload(false)}>
-  
-    <input
+    <SlInput
         onChange={(e)=>{
             setUploadDateData(e.target.value);
             let arr = e.target.value.split("-");
             setUploadMonth(arr[1])
             setUploadYear(arr[0])
-
             console.log(e.target.value);
         }}
-            className="month-picker-ceam"
-            type="month"
+           style={{marginBottom:"20px"}}
+           label="Select Month"
+            type="Month"
             value={uploadDateData}
             name=""
             id=""
         />
+        <SlInput label='Upload File' type='file' onSlChange={(e)=>{
+            readUploadFile(e)
+        }} />
         <SlButton slot="footer" variant="success" onClick={() => {
-          setOpen(true)
+          onSubmit()
           setOpenUpload(false)
         }}>
           Next

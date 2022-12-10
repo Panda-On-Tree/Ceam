@@ -54,7 +54,7 @@
 
 .ceam-roster-date-main{
     min-width: 100%;
-  
+    margin-bottom: 2%;
     padding: 10px 0%;
     align-items: center;
     display: flex;
@@ -68,18 +68,23 @@
     padding:5px 10px;
     background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.288), -1px -1px 5px rgba(0, 0, 0, 0.178);
+    border: none;
 }
 
 
 .ceam-file-main{
-    min-width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     margin-bottom: 1%;
     padding: 0% 5% 1% 5%;
     border-bottom: 1px solid rgb(172, 172, 172);
+    gap: 15px;
 
+}
+.logout-buuton{
+    position: absolute;
+    right: 10px;
 }
 
 .table-ceam{
@@ -111,3 +116,4 @@
 .ot-roster-table-main{
     margin-top: 5%;
 }
+
