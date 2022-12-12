@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { SlButton, SlDialog,SlMenuItem, SlSelect } from '@shoelace-style/shoelace/dist/react/index.js';
+import { SlButton, SlDialog,SlMenuItem, SlSelect,SlInput } from '@shoelace-style/shoelace/dist/react/index.js';
 import axios from 'axios';
 import * as xlsx from 'xlsx';
 import { useNavigate } from 'react-router-dom';
+import {  toast } from 'react-toastify';
 
 import MUIDataTable from 'mui-datatables'
+import { baseurl } from '../../api/apiConfig';
 
 function CeamOtRoster() {
   const [col, setCol] = useState()
@@ -14,7 +16,8 @@ function CeamOtRoster() {
   const [file, setFile] = useState()
   const [month, setMonth] = useState('2022-12')
   const [rosterDataOT, setRosterDataOT] = useState()
-
+  const [division, setDivision] = useState()
+  const [plantName, setPlantName] = useState()
   let navigate = useNavigate()
 
   useEffect(()=>{
@@ -37,7 +40,7 @@ function getRosterOT(){
   console.log(data);
   axios({
     method: 'post',
-    url: `https://internal.microtek.tech:8443/v1/api/mhere/get-ot-roster`,
+    url: `${baseurl.base_url}/mhere/get-ot-roster`,
     headers: {
       'Content-Type': 'application/json',
     },
@@ -45,12 +48,24 @@ function getRosterOT(){
   })
   .then((res)=>{
     console.log(res.data.data);
-      
-    const columns = Object.keys(res.data.data[0]) 
-    const popped = columns.pop()
-    columns.unshift(popped)
+  if(res.data.data.length){
+    const columns = Object.keys(res.data.data[0])
+    const statusIndex = columns.indexOf("status");
+    const status = columns.splice(statusIndex, 1);
+    columns.unshift(status[0])
+    const plantIndex = columns.indexOf("plant");
+        
+    const plant = columns.splice(plantIndex, 1);
+    columns.unshift(plant[0])
+    const index = columns.indexOf("Employee Code");
+    const empid = columns.splice(index, 1);
+    columns.unshift(empid[0])
     setCol(columns)
     setRosterDataOT(res.data.data)
+  }
+  else{
+    setRosterDataOT()
+  }
   })
   .catch((err)=>{
     alert(err.response.data.message)
@@ -66,12 +81,17 @@ function getRosterOT(){
     const data = {
       month:uploadMonth,
       year:uploadYear,
-      ot_roster_data: file
+      ot_roster_data: file,
+      employee_id:localStorage.getItem("employee_id"),
+      manager_id:"57055",
+      plant:plantName,
+      "division":division
+
     }
     console.log(data);
     axios({
       method: 'post',
-      url: `https://internal.microtek.tech:8443/v1/api/mhere/upload-ot-roster`,
+      url: `${baseurl.base_url}/mhere/upload-ot-roster`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -79,9 +99,29 @@ function getRosterOT(){
     })
     .then((res)=>{
       console.log(res);
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        });
     })
     .catch((err)=>{
-      alert(err.response.data.message)
+     // alert(err.response.data.message)
+      toast.error(err.response.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        });
       console.log(err);
     })
 
@@ -108,20 +148,28 @@ function getRosterOT(){
 
   return (
     <div className='ceam-roster-main'>
-        <div className="ceam-roster-date-main">
-        <input
+  
+        <div className="ceam-file-main">
+          <div className='ceam-search-main'>
+          <input
         onChange={(e)=>{
             setMonth(e.target.value)
             console.log(e.target.value);
         }}
-            className="month-picker-ceam"
+            className="month-picker-ceam-second"
             type="month"
             value={month}
             name=""
             id=""
         />
-        </div>
-        <div className="ceam-file-main">
+          <SlButton variant='primary' onClick={()=>{
+           getRosterOT()      
+        }} >Get Roster</SlButton>
+          </div>
+        <div className='ceam-main-buttons'>
+        <SlButton variant='neutral' onClick={()=>{
+            navigate("/ot-roster-approve")
+        }} >Approve</SlButton>
       <SlButton variant='primary' onClick={()=>{
        // setSelectMonth(true)
       }}>
@@ -133,35 +181,42 @@ function getRosterOT(){
       }}>
         Upload OT Roster
       </SlButton>
-      <SlButton variant='primary' onClick={()=>{
+        </div>
+     {/*  <SlButton variant='primary' onClick={()=>{
         navigate("/")
       }}>
         Go Attendence Roster
-      </SlButton>
+      </SlButton> */}
     </div>
     <SlDialog label="Upload Roster OT" open={openUploadOT} onSlAfterHide={() => setOpenUploadOT(false)}>
   
      <div className='file-input-dialog-main'>
      <input
-      style={{display:"block", "margin":"0px"}}
+      
       onChange={(e)=>{
         setUploadOtDate(e.target.value)
           console.log(e.target.value);
       }}
-          className="month-picker-ceam"
+          className="month-picker-ceam ot-upload-month"
           type="month"
           value={uploadOtDate}
           name=""
           id=""
       />
+      <SlInput style={{"marginBottom":"20px"}} onSlChange={(e)=>{
+            setPlantName(e.target.value)
+        }} label="Plant" />
+        <SlInput style={{"marginBottom":"20px"}} onSlChange={(e)=>{
+            setDivision(e.target.value)
+        }} label="Divisiov" />
       <input className='custom-file-input' type="file" onChange={(e)=>{readUploadFile(e)}} />
      </div>
-      <SlButton slot="footer" variant="success" onClick={() => {
+      <SlButton slot="footer" style={{"marginRight":"15px"}} variant="success" onClick={() => {
         onSubmitOT()
         setOpenUploadOT(false)
 
       }}>
-        Next
+        Upload
       </SlButton>
       <SlButton slot="footer" variant="danger" onClick={() => {
         setOpenUploadOT(false)
@@ -171,12 +226,12 @@ function getRosterOT(){
       </SlButton>
     </SlDialog>
     <div className='table-ceam'>
-    <MUIDataTable
+    {rosterDataOT?<MUIDataTable
         title="Over Time Roster"  
         data={rosterDataOT}
         columns={col}
         options={options}
-    ></MUIDataTable>
+    ></MUIDataTable>:<p className='no-data'>No Data Found For This Month</p>}
     </div>
     
     </div>

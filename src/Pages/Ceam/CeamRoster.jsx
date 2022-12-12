@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { ReactSpreadsheetImport } from "react-spreadsheet-import";
 import './Ceam.css';
 import { SlButton, SlDialog,SlInput,SlMenuItem, SlSelect } from '@shoelace-style/shoelace/dist/react/index.js';
 import thirtyonedays from './templates/31daysTemplate.xlsx'
@@ -11,7 +10,8 @@ import MUIDataTable from 'mui-datatables'
 import * as xlsx from 'xlsx';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { baseurl } from '../../api/apiConfig';
+import {  toast } from 'react-toastify';
 function CeamRoster() {
 
   let navigate = useNavigate()
@@ -30,6 +30,8 @@ function CeamRoster() {
   const [href, setHref] = useState()
   const [downMonth, setDownMonth] = useState('2022-02')
   const [col, setCol] = useState()
+  const [division, setDivision] = useState()
+  const [plantName, setPlantName] = useState()
   const [month, setMonth] =useState('2022-12')
 
 
@@ -42,11 +44,7 @@ function CeamRoster() {
   const options = {
     tableBodyMaxHeight: '64vh',
     responsive: 'standard',
-    onRowSelectionChange: (allRowsSelected)=>{
-        console.log(allRowsSelected);
-            
-    },
-    
+    selectableRowsHideCheckboxes: true
 }
 
 
@@ -61,7 +59,7 @@ function CeamRoster() {
     console.log(data);
     axios({
       method: 'post',
-      url: `https://internal.microtek.tech:8443/v1/api/mhere/get-roster`,
+      url: `${baseurl.base_url}/mhere/get-roster`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -69,15 +67,27 @@ function CeamRoster() {
     })
     .then((res)=>{
       console.log(res.data.data);
-        
-      const columns = Object.keys(res.data.data[0]) 
-      const popped = columns.pop()
-      columns.unshift(popped)
-      setCol(columns)
-      setRosterData(res.data.data)
+      if(res.data.data.length){
+        const columns = Object.keys(res.data.data[0]);
+        const statusIndex = columns.indexOf("status");
+        const status = columns.splice(statusIndex, 1);
+        columns.unshift(status[0])
+        const plantIndex = columns.indexOf("plant");   
+        const plant = columns.splice(plantIndex, 1);
+        columns.unshift(plant[0])
+        const index = columns.indexOf("Employee Code");
+        const empid = columns.splice(index, 1);
+        columns.unshift(empid[0])
+        setCol(columns)
+        setRosterData(res.data.data)
+      }
+      else{
+        setRosterData()
+      }
+     
     })
     .catch((err)=>{
-      alert(err.response.data.message)
+     // alert(err.response.data.message)
       console.log(err);
     })
   }
@@ -91,7 +101,7 @@ function CeamRoster() {
     console.log(data);
     axios({
       method: 'post',
-      url: `https://internal.microtek.tech:8443/v1/api/mhere/get-ot-roster`,
+      url: `${baseurl.base_url}/mhere/get-ot-roster`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -146,16 +156,21 @@ function CeamRoster() {
   }
 
   function onSubmit(){
-   
+   let arr = uploadDateData.split("-")
+    console.log(arr);
     const data = {
-      month:uploadMonth,
-      year:uploadYear,
-      roster_data: file
+      month:arr[1],
+      year:arr[0],
+      roster_data: file,
+      employee_id:localStorage.getItem("employee_id"),
+      manager_id:"57055",
+      plant:plantName,
+      "division":division
     }
     console.log(data);
     axios({
       method: 'post',
-      url: `https://internal.microtek.tech:8443/v1/api/mhere/upload-roster`,
+      url: `${baseurl.base_url}/mhere/upload-roster`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -163,9 +178,29 @@ function CeamRoster() {
     })
     .then((res)=>{
       console.log(res);
+      toast.success(res.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        });
     })
     .catch((err)=>{
-      alert(err.response.data.message)
+    
+      toast.error(err.response.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "colored",
+        });
       console.log(err);
     })
 
@@ -240,7 +275,7 @@ const readUploadFile = (e) => {
   return (
     <div className="ceam-roster-main">
 
-    <div className="ceam-roster-date-main">
+    {/* <div className="ceam-roster-date-main">
         <input
         onChange={(e)=>{
             setMonth(e.target.value)
@@ -252,30 +287,44 @@ const readUploadFile = (e) => {
             name=""
             id=""
         />
-         <SlButton variant="danger" className="logout-buuton" onClick={()=>{
-            localStorage.clear()
-            navigate("/login")
-        }}>Logout</SlButton>
-    </div>
+    </div> */}
     <div className="ceam-file-main">
+   <div className='ceam-search-main'>
+   <input
+        onChange={(e)=>{
+            setMonth(e.target.value)
+            console.log(e.target.value);
+        }}
+            className="month-picker-ceam-second"
+            type="month"
+            value={month}
+            name=""
+            id=""
+        />
+    <SlButton variant='primary' onClick={()=>{
+           getRoster()      
+        }} >Get Roster</SlButton>
+   </div>
+       <div className='ceam-main-buttons'>
+       <SlButton variant='neutral' onClick={()=>{
+            navigate("/roster-approve")
+        }} >Approve</SlButton>
       <SlButton variant="primary" onClick={()=>{
           setSelectMonth(true)
         }}> Download Roster Template</SlButton>
       <SlButton variant="primary" onClick={()=>{
         setOpenUpload(true)
         }}> Upload New Roster</SlButton>
-      
-      <SlButton variant="primary" onClick={()=>{
-          navigate("/ot-roster")
-        }}>GO to OT Roster</SlButton>
+       </div>
     </div>
    <div className='table-ceam'>
-   <MUIDataTable
+  {rosterData? <MUIDataTable
       title="Shift Roster"  
       data={rosterData}
       columns={col}
       options={options}
-  ></MUIDataTable>
+  ></MUIDataTable>:<p className='no-data'>No Data Found For This Month</p>}
+  
   {/*   <div className='ot-roster-table-main'>
                <MUIDataTable
                     title="Over Time Roster"  
@@ -286,8 +335,7 @@ const readUploadFile = (e) => {
     </div> */}
     
    </div>
-   <ReactSpreadsheetImport isOpen={open} onClose={onClose} onSubmit={onSubmit} fields={fields} />
-   <ReactSpreadsheetImport isOpen={openOT} onClose={onCloseOT} onSubmit={onSubmitOT} fields={fields} />
+ 
    <SlDialog label="Download Template" open={selectMonth} onSlRequestClose={() => setSelectMonth(false)}>
     
       <input
@@ -342,28 +390,31 @@ const readUploadFile = (e) => {
       </SlDialog>
     <SlDialog label="Upload Roster" open={openUpload} onSlAfterHide={() => setOpenUpload(false)}>
     <SlInput
-        onChange={(e)=>{
+        onSlChange={(e)=>{
             setUploadDateData(e.target.value);
-            let arr = e.target.value.split("-");
-            setUploadMonth(arr[1])
-            setUploadYear(arr[0])
             console.log(e.target.value);
         }}
            style={{marginBottom:"20px"}}
            label="Select Month"
             type="Month"
-            value={uploadDateData}
             name=""
             id=""
         />
-        <SlInput label='Upload File' type='file' onSlChange={(e)=>{
+       
+        <SlInput style={{"marginBottom":"20px"}} onSlChange={(e)=>{
+            setPlantName(e.target.value)
+        }} label="Plant" />
+        <SlInput style={{"marginBottom":"20px"}} onSlChange={(e)=>{
+            setDivision(e.target.value)
+        }} label="Divisiov" />
+        <input  label='Upload File' type='file'  onChange={(e)=>{
             readUploadFile(e)
         }} />
-        <SlButton slot="footer" variant="success" onClick={() => {
+        <SlButton slot="footer" style={{"marginRight":"20px"}} variant="success" onClick={() => {
           onSubmit()
           setOpenUpload(false)
         }}>
-          Next
+          Upload
         </SlButton>
         <SlButton slot="footer" variant="danger" onClick={() => setOpenUpload(false)}>
           Close

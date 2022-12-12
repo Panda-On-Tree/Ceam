@@ -45,6 +45,10 @@
     background-color: rgba(255, 255, 255, 0);
     
 }
+.ceam-search-main{
+    display: flex;
+    gap: 20px;
+}
 .ceam-roster-main{
     display: flex;
     flex-direction: column;
@@ -65,21 +69,36 @@
     margin: auto;
     max-width: 25vw;
     border-radius: 20px;
-    padding:5px 10px;
     background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.288), -1px -1px 5px rgba(0, 0, 0, 0.178);
     border: none;
+    padding: 10px 20px;
+    margin-top: 2vh;
 }
-
+.month-picker-ceam-second{
+    margin: auto;
+    max-width: 25vw;
+    border-radius: 3px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.288), -1px -1px 5px rgba(0, 0, 0, 0.178);
+    border: none;
+    padding: 10px 20px;
+   
+}
+.ceam-main-buttons{
+    display: flex;
+    gap: 20px;
+}
 
 .ceam-file-main{
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 1%;
+    justify-content: space-between;
+    margin-bottom: 3vh;
     padding: 0% 5% 1% 5%;
     border-bottom: 1px solid rgb(172, 172, 172);
     gap: 15px;
+    margin-top: 7vh;
 
 }
 .logout-buuton{
@@ -88,7 +107,7 @@
 }
 
 .table-ceam{
-    padding: 0% 2%;
+    padding: 0% 1% 5vh 1%;
 }
 
 .open-roster-upload{
@@ -117,3 +136,15 @@
     margin-top: 5%;
 }
 
+.ot-upload-month{
+    width: 100%;
+    border-radius: 5px !important;
+    margin-bottom: 10px;
+}
+
+
+.no-data{
+    font-size: 20px;
+    text-align: center;
+    margin-top: 10vh;
+}
