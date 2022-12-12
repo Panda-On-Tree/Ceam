@@ -167,9 +167,10 @@ function getRosterOT(){
         }} >Get Roster</SlButton>
           </div>
         <div className='ceam-main-buttons'>
-        <SlButton variant='neutral' onClick={()=>{
+          {JSON.parse(localStorage.getItem('module_access'))?.ot_approval? <SlButton variant='neutral' onClick={()=>{
             navigate("/ot-roster-approve")
-        }} >Approve</SlButton>
+        }} >Approve</SlButton>:""}
+       
       <SlButton variant='primary' onClick={()=>{
        // setSelectMonth(true)
       }}>

@@ -306,9 +306,10 @@ const readUploadFile = (e) => {
         }} >Get Roster</SlButton>
    </div>
        <div className='ceam-main-buttons'>
-       <SlButton variant='neutral' onClick={()=>{
+        {JSON.parse(localStorage.getItem('module_access'))?.roster_approval? <SlButton variant='neutral' onClick={()=>{
             navigate("/roster-approve")
-        }} >Approve</SlButton>
+        }} >Approve</SlButton>:""}
+      
       <SlButton variant="primary" onClick={()=>{
           setSelectMonth(true)
         }}> Download Roster Template</SlButton>
