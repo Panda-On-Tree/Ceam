@@ -68,22 +68,22 @@ function Login() {
               })
               .then((res)=>{
                 console.log(res);
-                let data ={
-                  employee_id:response.data.new_e_code,
-                  module_name:"Ceam"
-                }
-                axios({
-                  method:"post",
-                  url:`${baseurl.base_url}/mhere/log-login`,
-                  headers:{
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                  },
-                  data
-                })
+               
                 if(res.data.data?.ceam_management){
                   localStorage.setItem('module_access', JSON.stringify(res.data.data))
-
+                  let data ={
+                    employee_id:response.data.new_e_code,
+                    module_name:"Ceam"
+                  }
+                  axios({
+                    method:"post",
+                    url:`${baseurl.base_url}/mhere/log-login`,
+                    headers:{
+                      "Content-Type": "application/json",
+                      "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+                    data
+                  })
                     navigate('/')
                     window.location.reload()
                 }
