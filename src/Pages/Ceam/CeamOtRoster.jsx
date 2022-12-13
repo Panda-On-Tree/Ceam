@@ -4,16 +4,22 @@ import axios from 'axios';
 import * as xlsx from 'xlsx';
 import { useNavigate } from 'react-router-dom';
 import {  toast } from 'react-toastify';
-
+import thirtyonedays from './templates/31daysTemplate.xlsx'
+import thirtydays from './templates/30daysTemplate.xlsx'
+import twentyeightdays from './templates/28daysTemplate.xlsx'
+import twentyninedays from './templates/9daysTemplate.xlsx'
 import MUIDataTable from 'mui-datatables'
 import { baseurl } from '../../api/apiConfig';
 
 function CeamOtRoster() {
   const [col, setCol] = useState()
-
+  const [selectMonth, setSelectMonth] = useState(false)
   const [openUploadOT, setOpenUploadOT] = useState(false)
   const [uploadOtDate, setUploadOtDate] = useState('2022-12')
   const [file, setFile] = useState()
+  const [downMonth, setDownMonth] = useState('2022-02')
+  const [href, setHref] = useState()
+
   const [month, setMonth] = useState('2022-12')
   const [rosterDataOT, setRosterDataOT] = useState()
   const [division, setDivision] = useState()
@@ -144,6 +150,24 @@ function getRosterOT(){
         reader.readAsArrayBuffer(e.target.files[0])
     }
   }
+  const getDays = (year, month) => {
+    let days =  new Date(year, month, 0).getDate();
+    if(days == 31){
+        setHref(thirtyonedays)
+    }
+    else if(days == 30){
+        setHref(thirtydays)
+    }
+    else if(days == 28){
+        setHref(twentyeightdays)
+    }
+    else if(days == 29){
+        setHref(twentyninedays)
+    }
+    else{
+      alert("select correct")
+    }
+};
   
 
   return (
@@ -162,7 +186,7 @@ function getRosterOT(){
             name=""
             id=""
         />
-          <SlButton variant='primary' onClick={()=>{
+          <SlButton  variant='primary' onClick={()=>{
            getRosterOT()      
         }} >Get Roster</SlButton>
           </div>
@@ -171,12 +195,12 @@ function getRosterOT(){
             navigate("/ot-roster-approve")
         }} >Approve</SlButton>:""}
        
-      <SlButton variant='primary' onClick={()=>{
-       // setSelectMonth(true)
+      <SlButton variant='primary' outline onClick={()=>{
+        setSelectMonth(true)
       }}>
       Download Roster Template
       </SlButton>
-      <SlButton variant='primary'  onClick={()=>{
+      <SlButton variant='primary' outline  onClick={()=>{
        
        setOpenUploadOT(true)
       }}>
@@ -234,7 +258,31 @@ function getRosterOT(){
         options={options}
     ></MUIDataTable>:<p className='no-data'>No Data Found For This Month</p>}
     </div>
+    <SlDialog label="Download Template" open={selectMonth} onSlRequestClose={() => setSelectMonth(false)}>
     
+      <input
+        onChange={(e)=>{
+            setDownMonth(e.target.value)
+            console.log(e.target.value);
+            let arr = e.target.value.split("-");
+            console.log(arr);
+            getDays(arr[0], arr[1])
+           
+        }}
+            className="month-picker-ceam-second"
+            type="month"
+            value={downMonth}
+            name=""
+            id=""
+        />
+        <p style={{"marginTop":"20px"}}>Allowed Values : OT1, OT2 , OT3, OT4</p>
+        <SlButton style={{"marginRight":"20px"}} slot="footer" variant="success">
+           <a href={href} download="template">Download Roster</a> 
+        </SlButton>
+        <SlButton slot="footer" variant="danger" onClick={() => setSelectMonth(false)}>
+          Close
+        </SlButton>
+    </SlDialog>
     </div>
   )
 }

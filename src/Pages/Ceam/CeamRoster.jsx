@@ -310,10 +310,10 @@ const readUploadFile = (e) => {
             navigate("/roster-approve")
         }} >Approve</SlButton>:""}
       
-      <SlButton variant="primary" onClick={()=>{
+      <SlButton variant="primary" outline onClick={()=>{
           setSelectMonth(true)
         }}> Download Roster Template</SlButton>
-      <SlButton variant="primary" onClick={()=>{
+      <SlButton variant="primary" outline onClick={()=>{
         setOpenUpload(true)
         }}> Upload New Roster</SlButton>
        </div>
@@ -348,13 +348,14 @@ const readUploadFile = (e) => {
             getDays(arr[0], arr[1])
            
         }}
-            className="month-picker-ceam"
+            className="month-picker-ceam-second"
             type="month"
             value={downMonth}
             name=""
             id=""
         />
-        <SlButton slot="footer" variant="success" onClick={() =>{
+        <p style={{"marginTop":"20px"}}>Allowed Values : G,E,M,N,WO,L</p>
+        <SlButton style={{"marginRight":"20px"}} slot="footer" variant="success" onClick={() =>{
           downloadTemplate()
         }}>
            <a href={href} download="template">Download Roster</a> 

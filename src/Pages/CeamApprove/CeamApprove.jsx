@@ -165,11 +165,11 @@ function CeamApprove() {
         }} >Get Approval Roster</SlButton>
       </div>
     <div className='ceam-main-buttons'>
-    <SlButton variant='primary' onClick={()=>{
+    <SlButton variant='success' outline onClick={()=>{
         sendApproval("approved")
         getRosterApproval()
         }} >Approve Selected</SlButton>
-    <SlButton variant='primary' onClick={()=>{
+    <SlButton variant='danger' outline onClick={()=>{
         sendApproval("rejected")
         getRosterApproval()
         }} >Reject Selected</SlButton>
