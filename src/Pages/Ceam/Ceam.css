@@ -148,3 +148,11 @@
     text-align: center;
     margin-top: 10vh;
 }
+
+.update-ot-single-main{
+    display: flex;
+    flex-direction: column;
+   
+    min-width: 100%;
+    gap: 15px;
+}

@@ -13,6 +13,21 @@ import { baseurl } from '../../api/apiConfig';
 
 function CeamOtRoster() {
   const [col, setCol] = useState()
+  const [openUpSignleOt,setOpenUpSignleOt] = useState(false)
+  const [signleOtUpData, setSignleOtUpData] = useState({
+    employee_id:"",
+    date:"",
+    month:"",
+    year:"",
+    plant:"",
+    division:"",
+    ot_type:"",
+    updated_by:localStorage.getItem("employee_id"),
+    manager_id:"57055"
+  })
+  const [plantList, setPlantList] = useState([])
+  const [otList, setOtList] = useState()
+  const [divisionList, setDivisionList] = useState([])
   const [selectMonth, setSelectMonth] = useState(false)
   const [openUploadOT, setOpenUploadOT] = useState(false)
   const [uploadOtDate, setUploadOtDate] = useState('2022-12')
@@ -21,7 +36,7 @@ function CeamOtRoster() {
   const [href, setHref] = useState()
 
   const [month, setMonth] = useState('2022-12')
-  const [rosterDataOT, setRosterDataOT] = useState()
+  const [rosterDataOT, setRosterDataOT] = useState([])
   const [division, setDivision] = useState()
   const [plantName, setPlantName] = useState()
   let navigate = useNavigate()
@@ -30,12 +45,122 @@ function CeamOtRoster() {
    // getRoster()
     getRosterOT()
   },[month])
+   useEffect(()=>{
+    getData()
+   },[])
+
+  
+const CustomToolbar = ({displayData}) => {
+  return (
+      <SlButton style={{"marginLeft":"20px"}} slot="footer" variant="primary" onClick={()=>{
+        setOpenUpSignleOt(true)
+      }}>
+          Update Single OT
+        </SlButton>
+  );
+}
   const options = {
     tableBodyMaxHeight: '64vh',
     responsive: 'standard',
     selectableRowsHideCheckboxes: true,
+    customToolbar: CustomToolbar ,
 }
 
+function getData() {
+  axios({
+    method: 'get',
+    url: `${baseurl.base_url}/mhere/get-plant`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((res)=>{
+    console.log(res);
+    setPlantList(res.data.data)
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+  axios({
+    method: 'get',
+    url: `${baseurl.base_url}/mhere/get-ot-type`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((res)=>{
+    console.log(res);
+    setOtList(res.data.data)
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+  
+
+}
+
+function getDivision(item) {
+  const data = {
+    plant:item
+  }
+  axios({
+    method: 'post',
+    url: `${baseurl.base_url}/mhere/get-division`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+  .then((res)=>{
+    console.log(res);
+    setDivisionList(res.data.data)
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+  
+}
+
+function updateSignleOt(){
+
+  axios({
+    method: 'post',
+    url: `${baseurl.base_url}/mhere/update-single-ot`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data:signleOtUpData,
+  })
+  .then((res)=>{
+    console.log(res);
+    setOpenUpSignleOt(false)
+    toast.success(res.data.message, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "colored",
+      });
+  
+  })
+  .catch((err)=>{
+    console.log(err);
+    toast.error(err.response.data.message, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      theme: "colored",
+      });
+  
+  })
+}
 function getRosterOT(){
   let arr = month.split("-");
   const data ={
@@ -70,7 +195,7 @@ function getRosterOT(){
     setRosterDataOT(res.data.data)
   }
   else{
-    setRosterDataOT()
+    setRosterDataOT([])
   }
   })
   .catch((err)=>{
@@ -213,7 +338,7 @@ function getRosterOT(){
         Go Attendence Roster
       </SlButton> */}
     </div>
-    <SlDialog label="Upload Roster OT" open={openUploadOT} onSlAfterHide={() => setOpenUploadOT(false)}>
+    <SlDialog label="Upload Roster OT" open={openUploadOT} onSlRequestClose={() => setOpenUploadOT(false)}>
   
      <div className='file-input-dialog-main'>
      <input
@@ -228,12 +353,27 @@ function getRosterOT(){
           name=""
           id=""
       />
-      <SlInput style={{"marginBottom":"20px"}} onSlChange={(e)=>{
-            setPlantName(e.target.value)
-        }} label="Plant" />
-        <SlInput style={{"marginBottom":"20px"}} onSlChange={(e)=>{
-            setDivision(e.target.value)
-        }} label="Divisiov" />
+       <SlSelect  style={{"marginBottom":"15px"}} label="Plant" onSlChange={(e)=>{
+           setPlantName(e.target.value)
+           getDivision(e.target.value)
+        }}>
+            {plantList?.map((item,i)=>{
+            return(
+              <SlMenuItem key={`${i}plant`} value={item.plant}>{item.plant}</SlMenuItem>
+
+            )            
+          })}
+        </SlSelect> 
+        <SlSelect  style={{"marginBottom":"15px"}} label="Division" onSlChange={(e)=>{
+           setDivision(e.target.value)
+        }}>
+            {divisionList?.map((item,i)=>{
+            return(
+              <SlMenuItem key={`${i}divisionu`} value={item.division}>{item.division}</SlMenuItem>
+
+            )            
+          })}
+        </SlSelect>
       <input className='custom-file-input' type="file" onChange={(e)=>{readUploadFile(e)}} />
      </div>
       <SlButton slot="footer" style={{"marginRight":"15px"}} variant="success" onClick={() => {
@@ -283,6 +423,64 @@ function getRosterOT(){
           Close
         </SlButton>
     </SlDialog>
+    <SlDialog label="Update/Add Single OT" open={openUpSignleOt} onSlRequestClose={() => setOpenUpSignleOt(false)}>
+        <div className='update-ot-single-main'>
+        <SlInput label="Employee Code" onSlChange={(e)=>{
+          setSignleOtUpData({...signleOtUpData,employee_id:e.target.value})
+        }} />
+        <SlInput type="date" label='OT Date' placeholder="Date" onSlChange={(e)=>{
+          console.log(e.target.value);
+          let arr = e.target.value.split("-")
+          console.log(arr);
+          setSignleOtUpData({...signleOtUpData,year:arr[0],month:parseInt(arr[1]),date:parseInt(arr[2])})
+          }} />
+        <SlSelect label="OT Type" onSlChange={(e)=>{
+           setSignleOtUpData({...signleOtUpData,ot_type:e.target.value})
+        }}>
+              <SlMenuItem key="empyt" value="">Remove OT</SlMenuItem>
+
+          {otList?.map((item,i)=>{
+            return(
+              <SlMenuItem key={`${i}ot`} value={item.shift_character}>{item.shift_character}</SlMenuItem>
+
+            )            
+          })}
+         
+        </SlSelect> 
+        <SlSelect label="Plant" onSlChange={(e)=>{
+           setSignleOtUpData({...signleOtUpData,plant:e.target.value})
+           getDivision(e.target.value)
+        }}>
+            {plantList?.map((item,i)=>{
+            return(
+              <SlMenuItem key={`${i}plant`} value={item.plant}>{item.plant}</SlMenuItem>
+
+            )            
+          })}
+        </SlSelect> 
+        <SlSelect label="Division" onSlChange={(e)=>{
+           setSignleOtUpData({...signleOtUpData,division:e.target.value})
+        }}>
+            {divisionList?.map((item,i)=>{
+            return(
+              <SlMenuItem key={`${i}division`} value={item.division}>{item.division}</SlMenuItem>
+
+            )            
+          })}
+        </SlSelect>
+        </div>
+        <SlButton style={{"marginRight":"15px"}} slot="footer" variant="success" onClick={() => {
+          console.log(signleOtUpData);
+          updateSignleOt()
+         
+        }}>
+          Update
+        </SlButton>
+        <SlButton slot="footer" variant="primary" onClick={() => setOpenUpSignleOt(false)}>
+          Close
+        </SlButton>
+      </SlDialog>
+
     </div>
   )
 }

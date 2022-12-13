@@ -33,7 +33,8 @@ function CeamRoster() {
   const [division, setDivision] = useState()
   const [plantName, setPlantName] = useState()
   const [month, setMonth] =useState('2022-12')
-
+  const [plantList, setPlantList] = useState([])
+  const [divisionList, setDivisionList] = useState([])
 
   useEffect(()=>{
     getRoster()
@@ -41,12 +42,65 @@ function CeamRoster() {
   },[month])
 
 
+  useEffect(()=>{
+    getData()
+   // getRosterOT()
+  },[])
+  const CustomToolbar = ({displayData}) => {
+    return (
+        <SlButton slot="footer" variant="primary">
+            Update
+          </SlButton>
+    );
+}
+
   const options = {
     tableBodyMaxHeight: '64vh',
     responsive: 'standard',
-    selectableRowsHideCheckboxes: true
+    selectableRowsHideCheckboxes: true,
+    //customToolbar: CustomToolbar ,
 }
 
+function getData() {
+  axios({
+    method: 'get',
+    url: `${baseurl.base_url}/mhere/get-plant`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((res)=>{
+    console.log(res);
+    setPlantList(res.data.data)
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+
+
+}
+
+function getDivision(item) {
+  const data = {
+    plant:item
+  }
+  axios({
+    method: 'post',
+    url: `${baseurl.base_url}/mhere/get-division`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data
+  })
+  .then((res)=>{
+    console.log(res);
+    setDivisionList(res.data.data)
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+  
+}
 
 
   function getRoster(){
@@ -364,7 +418,7 @@ const readUploadFile = (e) => {
           Close
         </SlButton>
     </SlDialog>
-    <SlDialog label="Upload Roster OT" open={openUploadOT} onSlAfterHide={() => setOpenUploadOT(false)}>
+    <SlDialog label="Upload Roster OT" open={openUploadOT} onSlRequestClose={() => setOpenUploadOT(false)}>
   
     <input
         onChange={(e)=>{
@@ -390,7 +444,7 @@ const readUploadFile = (e) => {
           Close
         </SlButton>
       </SlDialog>
-    <SlDialog label="Upload Roster" open={openUpload} onSlAfterHide={() => setOpenUpload(false)}>
+    <SlDialog label="Upload Roster" open={openUpload} onSlRequestClose={() => setOpenUpload(false)}>
     <SlInput
         onSlChange={(e)=>{
             setUploadDateData(e.target.value);
@@ -402,13 +456,27 @@ const readUploadFile = (e) => {
             name=""
             id=""
         />
-       
-        <SlInput style={{"marginBottom":"20px"}} onSlChange={(e)=>{
-            setPlantName(e.target.value)
-        }} label="Plant" />
-        <SlInput style={{"marginBottom":"20px"}} onSlChange={(e)=>{
-            setDivision(e.target.value)
-        }} label="Divisiov" />
+        <SlSelect style={{"marginBottom":"15px"}} label="Plant" onSlChange={(e)=>{
+           setPlantName(e.target.value)
+           getDivision(e.target.value)
+        }}>
+            {plantList?.map((item,i)=>{
+            return(
+              <SlMenuItem key={`${i}plant`} value={item.plant}>{item.plant}</SlMenuItem>
+
+            )            
+          })}
+        </SlSelect> 
+        <SlSelect style={{"marginBottom":"15px"}} label="Division" onSlChange={(e)=>{
+           setDivision(e.target.value)
+        }}>
+            {divisionList?.map((item,i)=>{
+            return(
+              <SlMenuItem key={`${i}division`} value={item.division}>{item.division}</SlMenuItem>
+
+            )            
+          })}
+        </SlSelect>
         <input  label='Upload File' type='file'  onChange={(e)=>{
             readUploadFile(e)
         }} />

@@ -59,6 +59,7 @@ function CeamOtApprove() {
           })   
           .then((res)=>{
             console.log(res);
+            getOtRosterApproval()
             toast.success(res.data.message, {
               position: "top-right",
               autoClose: 2000,
@@ -71,6 +72,7 @@ function CeamOtApprove() {
               });
           })
           .catch((err)=>{
+            getOtRosterApproval()
             toast.error(err.response.data.message, {
               position: "top-right",
               autoClose: 2000,
@@ -102,18 +104,24 @@ function CeamOtApprove() {
       })
       .then((res)=>{
         console.log(res);
-        setRosterData(res.data.data)
-        const columns = Object.keys(res.data.data[0]) 
-        const statusIndex = columns.indexOf("status");
-        const status = columns.splice(statusIndex, 1);
-        columns.unshift(status[0])
-        const plantIndex = columns.indexOf("plant");
-        const plant = columns.splice(plantIndex, 1);
-        columns.unshift(plant[0])
-        const index = columns.indexOf("employee_id");
-        const empid = columns.splice(index, 1);
-        columns.unshift(empid[0])
-        setCol(columns)
+        if(res.data.data.length){
+          setRosterData(res.data.data)
+          const columns = Object.keys(res.data.data[0]) 
+          const statusIndex = columns.indexOf("status");
+          const status = columns.splice(statusIndex, 1);
+          columns.unshift(status[0])
+          const plantIndex = columns.indexOf("plant");
+          const plant = columns.splice(plantIndex, 1);
+          columns.unshift(plant[0])
+          const index = columns.indexOf("employee_id");
+          const empid = columns.splice(index, 1);
+          columns.unshift(empid[0])
+          setCol(columns)
+        }
+        else{
+          setRosterData([])
+        }
+       
       })
       .catch((err)=>{
         console.log(err);
@@ -147,7 +155,7 @@ function CeamOtApprove() {
      
     <SlButton variant='success' outline onClick={()=>{
         sendApproval("approved")
-        getOtRosterApproval()
+       
         }} >Approve Selected</SlButton>
     <SlButton variant='danger' outline  onClick={()=>{
         sendApproval("rejected")
