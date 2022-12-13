@@ -415,7 +415,11 @@ function getRosterOT(){
             name=""
             id=""
         />
-        <p style={{"marginTop":"20px"}}>Allowed Values : OT1, OT2 , OT3, OT4</p>
+        <p style={{"marginTop":"20px"}}>Allowed Values {otList?.map((item,i)=>{
+          return(
+            <span key={`${i}ot`} style={{"fontWeight":"bold"}}>{item.shift_character}, </span>
+          )
+        })}</p>
         <SlButton style={{"marginRight":"20px"}} slot="footer" variant="success">
            <a href={href} download="template">Download Roster</a> 
         </SlButton>

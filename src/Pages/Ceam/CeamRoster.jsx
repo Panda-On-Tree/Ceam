@@ -15,7 +15,7 @@ import {  toast } from 'react-toastify';
 function CeamRoster() {
 
   let navigate = useNavigate()
-
+const [shiftList, setShiftList] = useState()
   const [open, setOpen] = useState(false)
   const [openOT, setOpenOT] = useState(false)
   const [file, setFile] = useState()
@@ -44,6 +44,7 @@ function CeamRoster() {
 
   useEffect(()=>{
     getData()
+   getShiftType()
    // getRosterOT()
   },[])
   const CustomToolbar = ({displayData}) => {
@@ -53,6 +54,23 @@ function CeamRoster() {
           </SlButton>
     );
 }
+ function getShiftType(){
+  axios({
+    method: 'get',
+    url: `${baseurl.base_url}/mhere/get-shift-type`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((res)=>{
+    console.log(res);
+    setShiftList(res.data.data)
+
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+ }
 
   const options = {
     tableBodyMaxHeight: '64vh',
@@ -408,7 +426,14 @@ const readUploadFile = (e) => {
             name=""
             id=""
         />
-        <p style={{"marginTop":"20px"}}>Allowed Values : G,E,M,N,WO,L</p>
+        <p style={{"marginTop":"20px"}}>Allowed Values : 
+        {shiftList?.map((item,i)=>{
+           return(
+            <span id={`${i}shift`} style={{"fontWeight":"bold"}}>{item.shift_character}, </span>
+           )
+        })}
+        </p>
+      
         <SlButton style={{"marginRight":"20px"}} slot="footer" variant="success" onClick={() =>{
           downloadTemplate()
         }}>
