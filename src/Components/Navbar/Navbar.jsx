@@ -27,6 +27,9 @@ function Navbar() {
                 <SlMenuItem onClick={()=>{
                      navigate("/ot-roster")
                 }}>OT Roster</SlMenuItem>
+                <SlMenuItem onClick={()=>{
+                     navigate("/plant-manage")
+                }}>Manage Plant</SlMenuItem>
                 </SlMenu>
             </SlDropdown> 
             <SlDropdown distance={5} className="nav-item">

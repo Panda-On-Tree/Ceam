@@ -1,0 +1,7 @@
+.plant-manage-table-main{
+    padding: 1%;
+}
+
+.tag-row::part(base){
+    cursor: pointer;
+}

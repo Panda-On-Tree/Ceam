@@ -80,7 +80,7 @@
     max-width: 25vw;
     border-radius: 3px;
     background-color: rgb(255, 255, 255);
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.288), -1px -1px 5px rgba(0, 0, 0, 0.178);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.116), -1px -1px 3px rgba(0, 0, 0, 0.116);
     border: none;
     padding: 10px 20px;
    

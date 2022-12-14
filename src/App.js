@@ -14,6 +14,7 @@ import CeamOtApprove from './Pages/CeamApprove/CeamOtApprove';
 import Navbar from './Components/Navbar/Navbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import PlantManage from './Pages/ManagePlant/PlantManage';
 setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/');
 function App() {
 
@@ -73,6 +74,16 @@ function App() {
           element={
             localStorage.getItem('token') ? (
               <CeamOtApprove />
+            ) : (
+              <Navigate replace to="/login" />
+            )
+          }>
+        </Route>
+        <Route   exact
+          path="/plant-manage"
+          element={
+            localStorage.getItem('token') ? (
+              <PlantManage />
             ) : (
               <Navigate replace to="/login" />
             )
