@@ -7,24 +7,24 @@
   font-family: 'Roboto', sans-serif;
   
 }
-::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+*::-webkit-scrollbar {
+    width: 5px !important;
+    height: 5px !important;
   }
   
   /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+ * ::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
   }
   
   /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #888;
+  *::-webkit-scrollbar-thumb {
+    background: #888 !important;
   }
   
   /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  *::-webkit-scrollbar-thumb:hover {
+    background: #555 !important;
   }
 
   button{
@@ -37,7 +37,7 @@
 
 .table-ceam *{
   font-size: 12px;
-  
+  color: black;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -48,15 +48,30 @@
 .MuiTableCell-body {
   border-right: 1px solid rgba(224, 224, 224, 1);
 }
-.MuiTableCell-root * {
-  /* border-right: 1px solid rgba(224, 224, 224, 1);
-  border-top: 1px solid rgba(224, 224, 224, 1); */
-  font-family: 'Roboto', sans-serif;
-}
+
 .css-1ygcj2i-MuiTableCell-root{
   padding: 10px !important;
 }
 
 .css-1w1rijm-MuiButtonBase-root-MuiButton-root{
   padding: 0px !important;
+}
+
+.css-1ex1afd-MuiTableCell-root{
+  padding: 12px 10px !important;
+}
+.tss-1cdcmys-MUIDataTable-responsiveBase{
+  z-index: 0 !important;
+}
+
+.tss-1akey0g-MUIDataTableHeadCell-data {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tss-qbo1l6-MUIDataTableToolbar-actions *{
+  color: rgb(82, 82, 82) !important;
+}
+.css-15wwp11-MuiTableHead-root *{
+  color: rgb(44, 44, 44) !important;
+
 }

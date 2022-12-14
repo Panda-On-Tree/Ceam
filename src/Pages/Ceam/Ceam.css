@@ -83,11 +83,13 @@
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.116), -1px -1px 3px rgba(0, 0, 0, 0.116);
     border: none;
     padding: 10px 20px;
+    min-width: 180px !important;
    
 }
 .ceam-main-buttons{
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .ceam-file-main{
@@ -156,3 +158,32 @@
     min-width: 100%;
     gap: 15px;
 }
+
+
+@media only screen and (max-width: 950px) {
+    .ceam-file-main{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+    }
+    .tss-hj53wm-MUIDataTableToolbar-titleText {
+        font-size: 16px !important;
+    }
+  }
+@media only screen and (max-width: 400px) {
+    .ceam-main-buttons {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        min-width: 100%;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .ceam-search-main{
+        flex-direction: column;
+        min-width: 100%;
+    }
+    .month-picker-ceam-second{
+        min-width: 100% !important;
+    }
+  }

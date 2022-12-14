@@ -15,6 +15,7 @@ import Navbar from './Components/Navbar/Navbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import PlantManage from './Pages/ManagePlant/PlantManage';
+import ManageApprovers from './Pages/Approval/ManageApprovers';
 setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/');
 function App() {
 
@@ -89,6 +90,16 @@ function App() {
             )
           }>
         </Route>
+        <Route   exact
+          path="/approve-manage"
+          element={
+            localStorage.getItem('token') ? (
+              <ManageApprovers />
+            ) : (
+              <Navigate replace to="/login" />
+            )
+          }>
+        </Route>
         </Route>
         <Route element={<Auth />}>
         <Route   exact
@@ -99,7 +110,7 @@ function App() {
         </Route>
         </Route>
       </Routes>
-      <ToastContainer />
+      <ToastContainer  />
     </div>
   );
 }

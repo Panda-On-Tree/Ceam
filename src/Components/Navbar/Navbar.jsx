@@ -30,13 +30,19 @@ function Navbar() {
                 <SlMenuItem onClick={()=>{
                      navigate("/plant-manage")
                 }}>Manage Plant</SlMenuItem>
+                <SlMenuItem onClick={()=>{
+                     navigate("/approve-manage")
+                }}>Manage Approver</SlMenuItem>
                 </SlMenu>
             </SlDropdown> 
             <SlDropdown distance={5} className="nav-item">
                 <SlButton className='nav-item-button' slot="trigger" caret>
-                    Profile
+                    Account
                 </SlButton>
                 <SlMenu>
+                <SlMenuItem onclick={()=>{
+                   
+                }}>{localStorage.getItem("fullname")}</SlMenuItem>
                 <SlMenuItem onclick={()=>{
                      localStorage.clear()
                      navigate("/login")
