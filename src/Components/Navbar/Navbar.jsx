@@ -33,6 +33,9 @@ function Navbar() {
                 <SlMenuItem onClick={()=>{
                      navigate("/approve-manage")
                 }}>Manage Approver</SlMenuItem>
+                <SlMenuItem onClick={()=>{
+                     navigate("/employee-master")
+                }}>Employee Master</SlMenuItem>
                 </SlMenu>
             </SlDropdown> 
             <SlDropdown distance={5} className="nav-item">

@@ -27,6 +27,18 @@
     background: #555 !important;
   }
 
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
   button{
     cursor: pointer;
   }
@@ -68,6 +80,10 @@
   font-weight: 600;
   white-space: nowrap;
 }
+.tss-10syd3x-MUIDataTableHeadCell-root{
+  font-weight: 600 !important;
+  white-space: nowrap;
+}
 .tss-qbo1l6-MUIDataTableToolbar-actions *{
   color: rgb(82, 82, 82) !important;
 }
@@ -75,3 +91,5 @@
   color: rgb(44, 44, 44) !important;
 
 }
+
+
