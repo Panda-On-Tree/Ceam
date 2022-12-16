@@ -43,9 +43,7 @@ input[type=number] {
     cursor: pointer;
   }
 
-.custom-file-input{
-  margin-top: 20px;
-}
+
 
 .table-ceam *{
   font-size: 12px;
@@ -89,7 +87,10 @@ input[type=number] {
 }
 .css-15wwp11-MuiTableHead-root *{
   color: rgb(44, 44, 44) !important;
-
 }
 
 
+.tss-9562fz-MUIDataTableViewCol-root {
+  padding: 16px 24px 16px 24px !important;
+  font-family: Roboto;
+}

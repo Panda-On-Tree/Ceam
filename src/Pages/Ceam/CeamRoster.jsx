@@ -382,9 +382,9 @@ const readUploadFile = (e) => {
             navigate("/roster-approve")
         }} >Approve</SlButton>:""}
       
-      <SlButton variant="primary" outline onClick={()=>{
+     {/*  <SlButton variant="primary" outline onClick={()=>{
           setSelectMonth(true)
-        }}> Download Roster Template</SlButton>
+        }}> Download Roster Template</SlButton> */}
       <SlButton variant="primary" outline onClick={()=>{
         setOpenUpload(true)
         }}> Upload New Roster</SlButton>
