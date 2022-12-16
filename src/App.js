@@ -17,10 +17,46 @@ import 'react-toastify/dist/ReactToastify.css';
 import PlantManage from './Pages/ManagePlant/PlantManage';
 import ManageApprovers from './Pages/Approval/ManageApprovers';
 import EmployeeMaster from './Pages/EmployeeMaster/EmployeeMaster';
+import axios from 'axios';
+import { baseurl } from './api/apiConfig';
+import { useEffect } from 'react';
 setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/');
 function App() {
 
   
+
+  let navigate = useNavigate()
+  useEffect(()=>{
+    verifyToken()
+  },[])
+
+  const verifyToken = () => {
+    if (!localStorage.getItem('token')) {
+      return
+    }
+    axios({
+      method: 'post',
+      url: `${baseurl.base_url}/mhere/verify-token`,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
+      .then(function (response) {
+        console.log(response.data)
+      })
+      .catch(function (err) {
+        console.log(err)
+        localStorage.clear()
+        localStorage.removeItem('employee_id')
+        localStorage.removeItem('token')
+        localStorage.removeItem('fullname')
+        localStorage.removeItem('email')
+        navigate('/login')
+      })
+  }
+
+
   const Dashboard = () => (
     <div >
       <Navbar />
