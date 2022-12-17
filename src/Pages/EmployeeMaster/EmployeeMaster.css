@@ -11,6 +11,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    min-width: 100%;
 }
 
 .add-emp-buttons-main{

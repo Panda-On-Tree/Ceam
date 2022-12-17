@@ -351,7 +351,7 @@ function EmployeeMaster() {
             <SlInput label="Base Location" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,base_location:e.target.value})}} />
             <SlInput label="Aadhar Number" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,aadhar_card_number:e.target.value})}} />
             <SlInput noSpinButtons  type='number' label="Mobile Number" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,mobile_number:e.target.value})}} />
-            <SlInput label="Date Of Joining" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,DOJ:e.target.value})}} />
+            <SlInput style={{"minWidth":"47%"}} type='date' label="Date Of Joining" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,DOJ:e.target.value})}} />
             </div>
             <div className='add-emp-buttons-main'>
             <SlButton slot="footer" variant="success" outline onClick={() => {

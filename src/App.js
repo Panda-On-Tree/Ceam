@@ -20,6 +20,7 @@ import EmployeeMaster from './Pages/EmployeeMaster/EmployeeMaster';
 import axios from 'axios';
 import { baseurl } from './api/apiConfig';
 import { useEffect } from 'react';
+import ShiftMaster from './Pages/ShiftMaster/ShiftMaster';
 setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/');
 function App() {
 
@@ -27,7 +28,7 @@ function App() {
 
   let navigate = useNavigate()
   useEffect(()=>{
-    verifyToken()
+   // verifyToken()
   },[])
 
   const verifyToken = () => {
@@ -147,6 +148,16 @@ function App() {
             )
           }>
         </Route>
+        <Route   exact
+          path="/shift-master"
+          element={
+            localStorage.getItem('token') ? (
+              <ShiftMaster />
+            ) : (
+              <Navigate replace to="/login" />
+            )
+          }>
+        </Route>
         </Route>
         <Route element={<Auth />}>
         <Route   exact
@@ -157,7 +168,14 @@ function App() {
         </Route>
         </Route>
       </Routes>
-      <ToastContainer  />
+      <ToastContainer
+       position= "top-right"
+       autoClose= {2000}
+       hideProgressBar={true}
+       closeOnClick
+       pauseOnHover
+       draggable
+       theme="colored" />
     </div>
   );
 }
