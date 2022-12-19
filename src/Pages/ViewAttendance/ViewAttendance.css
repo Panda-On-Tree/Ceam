@@ -1,0 +1,24 @@
+.view-attendance-main{
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+    gap: 40px;
+    min-height: 89vh;
+    background-color: #f7f9fa;
+}
+
+.attendance-search-main{
+    display: flex;
+    flex-direction: column;
+}
+.attendance-search-input-main{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+
+}
+
+.sl-details::part(summary){
+    color: #666666;
+}

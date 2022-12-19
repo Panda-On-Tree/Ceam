@@ -18,13 +18,14 @@
     flex-grow: 0.5;
     min-height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center ;
     align-items: center;
 }
 
 .logi-main-left-container{
     min-width: 75%;
-    min-height: 70%;
+    min-height: 74%;
 padding: 5% 5%;
     /* animation: abc 3s 1s ease-in infinite normal; */
     display: flex;

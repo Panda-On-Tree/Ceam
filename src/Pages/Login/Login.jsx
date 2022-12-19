@@ -112,11 +112,14 @@ function Login() {
   return (
     <div className='logi-main'>
         <div className='logi-main-left'>
+        <h3>Contractual Employee Management</h3>
             <div className='logi-main-left-container'>
               <form className='logi-main-left-inner'>
               
                 <div className='logi-main-left-header'>
-                        <h3>Welcome Back !</h3>
+                  
+                        <h3>Welcome Back CEAM !</h3>
+                        
                         <p> Please enter your details</p>
                     </div>
                     <div className='logi-input-main'>

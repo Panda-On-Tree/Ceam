@@ -28,6 +28,14 @@ function EmployeeMaster() {
       aadhar_card_number: "",
       mobile_number: "",
       DOJ: "",
+      father_name:"",
+      department:"",
+      DOB:"",
+      uan_number:"",
+      esic_number:"",
+      bank_account_number:"",
+      ifsc_code:"",
+      address:"",
       uploaded_by: localStorage.getItem("employee_id")
   })
     const [newEmpData, setNewEmpData] = useState({
@@ -341,17 +349,25 @@ function EmployeeMaster() {
         options={options}
       ></MUIDataTable>
         </div>
-        <SlDialog label="Add Employee" open={openAddEmp} onSlRequestClose={() => setOpenAddEmp(false)}>
+        <SlDialog style={{ '--width': '50vw' }} label="Add Employee" open={openAddEmp} onSlRequestClose={() => setOpenAddEmp(false)}>
             <div className='add-emp-inputs-main'>
             <SlInput label="Employee ID" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,employee_id:e.target.value})}} />
             <SlInput label="Employee Name" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,employee_name:e.target.value})}}  />
             <SlInput label="Vendor Code" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,vendor_name:e.target.value})}} />
             <SlInput label="Vendor Name" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,vendor_code:e.target.value})}} />
+            <SlInput label="Department" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,department:e.target.value})}} />
             <SlInput label="Gender" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,gender:e.target.value})}} />
+            <SlInput label="Father Name" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,father_name:e.target.value})}} />
+            <SlInput label="Address" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,address:e.target.value})}} />
             <SlInput label="Base Location" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,base_location:e.target.value})}} />
             <SlInput label="Aadhar Number" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,aadhar_card_number:e.target.value})}} />
+            <SlInput label="UAN Number" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,uan_number:e.target.value})}} />
+            <SlInput label="ESIC Number" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,esic_number:e.target.value})}} />
+            <SlInput label="Bank Account Number" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,bank_account_number:e.target.value})}} />
+            <SlInput label="IFSC Code" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,ifsc_code:e.target.value})}} />
             <SlInput noSpinButtons  type='number' label="Mobile Number" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,mobile_number:e.target.value})}} />
-            <SlInput style={{"minWidth":"47%"}} type='date' label="Date Of Joining" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,DOJ:e.target.value})}} />
+            <SlInput  type='date' label="Date Of Birth" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,DOB:e.target.value})}} />
+            <SlInput /* style={{"minWidth":"47%"}} */ type='date' label="Date Of Joining" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,DOJ:e.target.value})}} />
             </div>
             <div className='add-emp-buttons-main'>
             <SlButton slot="footer" variant="success" outline onClick={() => {

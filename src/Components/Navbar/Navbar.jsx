@@ -106,6 +106,9 @@ const getDays = (year, month) => {
                 <SlMenuItem onClick={()=>{
                      navigate("/shift-master")
                 }}>Shift/OT Master</SlMenuItem>
+                <SlMenuItem onClick={()=>{
+                     navigate("/view-attendance")
+                }}>View Attendance</SlMenuItem>
                 </SlMenu>
             </SlDropdown> 
             <SlDropdown distance={5} className="nav-item">

@@ -166,6 +166,7 @@ function ShiftMaster() {
             console.log(res);
             setOpenAddShift(false)
             toast.success(res.data.message);
+            
 
           })
           .catch((err)=>{
