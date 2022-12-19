@@ -310,6 +310,7 @@ function EmployeeMaster() {
       })
       .then((res)=>{
         console.log(res);
+        toast.success(res.data.message)
       })
       .catch((err)=>{
         console.log(err);
@@ -349,7 +350,7 @@ function EmployeeMaster() {
         options={options}
       ></MUIDataTable>
         </div>
-        <SlDialog style={{ '--width': '50vw' }} label="Add Employee" open={openAddEmp} onSlRequestClose={() => setOpenAddEmp(false)}>
+        <SlDialog style={{ '--width': '80vw' }} label="Add Employee" open={openAddEmp} onSlRequestClose={() => setOpenAddEmp(false)}>
             <div className='add-emp-inputs-main'>
             <SlInput label="Employee ID" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,employee_id:e.target.value})}} />
             <SlInput label="Employee Name" onSlChange={(e)=>{setSingleEmployeeUpload({...singleEmployeeUpload,employee_name:e.target.value})}}  />

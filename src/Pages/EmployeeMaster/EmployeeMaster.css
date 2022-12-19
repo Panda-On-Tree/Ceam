@@ -16,13 +16,13 @@
 }
 
 .add-emp-buttons-main{
-    margin-top: 8%;
+   
     justify-content: flex-end;
     display: flex;
     gap: 20px;
 }
 .add-emp-inputs-main > *{
-    flex-basis: 47%;
+    flex-basis: 20%;
 }
 
 

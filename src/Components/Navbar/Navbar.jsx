@@ -102,7 +102,7 @@ const getDays = (year, month) => {
                 }}>Manage Approver</SlMenuItem>
                 <SlMenuItem onClick={()=>{
                      navigate("/employee-master")
-                }}>Employee Master</SlMenuItem>
+                }}>Employee Management</SlMenuItem>
                 <SlMenuItem onClick={()=>{
                      navigate("/shift-master")
                 }}>Shift/OT Master</SlMenuItem>
