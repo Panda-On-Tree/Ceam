@@ -76,6 +76,7 @@ const [shiftList, setShiftList] = useState()
     tableBodyMaxHeight: '64vh',
     responsive: 'standard',
     selectableRowsHideCheckboxes: true,
+    rowsPerPage:15
     //customToolbar: CustomToolbar ,
 }
 
@@ -250,29 +251,11 @@ function getDivision(item) {
     })
     .then((res)=>{
       console.log(res);
-      toast.success(res.data.message, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "colored",
-        });
+      toast.success(res.data.message);
     })
     .catch((err)=>{
     
-      toast.error(err.response.data.message, {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "colored",
-        });
+      toast.error(err.response.data.message);
       console.log(err);
     })
 
@@ -400,7 +383,7 @@ const readUploadFile = (e) => {
   
   {/*   <div className='ot-roster-table-main'>
                <MUIDataTable
-                    title="Over Time Roster"  
+                    title="Reward Roster"  
                     data={rosterDataOT}
                     columns={col}
                     options={options}
@@ -443,7 +426,7 @@ const readUploadFile = (e) => {
           Close
         </SlButton>
     </SlDialog>
-    <SlDialog label="Upload Roster OT" open={openUploadOT} onSlRequestClose={() => setOpenUploadOT(false)}>
+    <SlDialog label="Upload Roster Reward" open={openUploadOT} onSlRequestClose={() => setOpenUploadOT(false)}>
   
     <input
         onChange={(e)=>{

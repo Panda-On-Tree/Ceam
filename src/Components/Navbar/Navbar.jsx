@@ -17,7 +17,7 @@ function Navbar() {
     const [downMonth, setDownMonth] = useState('2022-02')
     const [href, setHref] = useState()
     const [shiftList, setShiftList] = useState()
-
+  const [OtList, setOtList] = useState()
 
     function downloadTemplate(){
         console.log(downMonth);
@@ -36,6 +36,20 @@ function Navbar() {
           console.log(res);
           setShiftList(res.data.data)
       
+        })
+        .catch((err)=>{
+          console.log(err);
+        })
+        axios({
+          method: 'get',
+          url: `${baseurl.base_url}/mhere/get-ot-type`,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then((res)=>{
+          console.log(res);
+          setOtList(res.data.data)
         })
         .catch((err)=>{
           console.log(err);
@@ -85,15 +99,11 @@ const getDays = (year, month) => {
             </SlDropdown>
             <SlDropdown distance={5} className="nav-item">
                 <SlButton className='nav-item-button' slot="trigger" caret>
-                    Services
+                    Manage
                 </SlButton>
                 <SlMenu>
-                <SlMenuItem  onClick={()=>{
-                     navigate("/")
-                }}>Attendance Roster</SlMenuItem>
-                <SlMenuItem onClick={()=>{
-                     navigate("/ot-roster")
-                }}>OT Roster</SlMenuItem>
+               
+               
                 <SlMenuItem onClick={()=>{
                      navigate("/plant-manage")
                 }}>Manage Plant</SlMenuItem>
@@ -105,10 +115,48 @@ const getDays = (year, month) => {
                 }}>Employee Management</SlMenuItem>
                 <SlMenuItem onClick={()=>{
                      navigate("/shift-master")
-                }}>Shift/OT Master</SlMenuItem>
+                }}>Shift/Reward Master</SlMenuItem>
+               
+                <SlMenuItem onClick={()=>{
+                     navigate("/vendor-master")
+                }}>Manage Vendor</SlMenuItem>
+               {/*  <SlMenuItem onClick={()=>{
+                     navigate("/dept-master")
+                }}>Dept. Master</SlMenuItem> */}
+                </SlMenu>
+            </SlDropdown> 
+            <SlDropdown distance={5} className="nav-item">
+                <SlButton className='nav-item-button' slot="trigger" caret>
+                    Services
+                </SlButton>
+                <SlMenu>
+                <SlMenuItem  onClick={()=>{
+                     navigate("/")
+                }}>Attendance Roster</SlMenuItem>
+                <SlMenuItem onClick={()=>{
+                     navigate("/ot-roster")
+                }}>Reward Roster</SlMenuItem>
+             {/*    <SlMenuItem onClick={()=>{
+                     navigate("/plant-manage")
+                }}>Manage Plant</SlMenuItem>
+                <SlMenuItem onClick={()=>{
+                     navigate("/approve-manage")
+                }}>Manage Approver</SlMenuItem>
+                <SlMenuItem onClick={()=>{
+                     navigate("/employee-master")
+                }}>Employee Management</SlMenuItem>
+                <SlMenuItem onClick={()=>{
+                     navigate("/shift-master")
+                }}>Shift/OT Master</SlMenuItem> */}
                 <SlMenuItem onClick={()=>{
                      navigate("/view-attendance")
                 }}>View Attendance</SlMenuItem>
+                {/*  <SlMenuItem onClick={()=>{
+                      navigate("/vendor-master")
+                  }}>Vendor Master</SlMenuItem> */}
+               {/*  <SlMenuItem onClick={()=>{
+                     navigate("/dept-master")
+                }}>Dept. Master</SlMenuItem> */}
                 </SlMenu>
             </SlDropdown> 
             <SlDropdown distance={5} className="nav-item">
@@ -147,8 +195,15 @@ const getDays = (year, month) => {
             name=""
             id=""
         />
-        <p style={{"marginTop":"20px"}}>Allowed Values : 
+        <p style={{"marginTop":"20px"}}>Allowed Values for Shift : 
         {shiftList?.map((item,i)=>{
+           return(
+            <span id={`${i}shift`} style={{"fontWeight":"bold"}}>{item.shift_character}, </span>
+           )
+        })}
+        </p>
+        <p style={{"marginTop":"20px"}}>Allowed Values for Reward : 
+        {OtList?.map((item,i)=>{
            return(
             <span id={`${i}shift`} style={{"fontWeight":"bold"}}>{item.shift_character}, </span>
            )

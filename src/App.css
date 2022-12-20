@@ -94,3 +94,18 @@ input[type=number] {
   padding: 16px 24px 16px 24px !important;
   font-family: Roboto;
 }
+
+
+
+@media only screen and (max-width: 350px) {
+  .tss-qbo1l6-MUIDataTableToolbar-actions{
+    display: none;
+  } 
+  .css-pdct74-MuiTablePagination-selectLabel{
+    display: none;
+  }
+  .css-16c50h-MuiInputBase-root-MuiTablePagination-select{
+    display: none !important;
+  }
+  
+}

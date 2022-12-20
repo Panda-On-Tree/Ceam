@@ -22,6 +22,8 @@ import { baseurl } from './api/apiConfig';
 import { useEffect } from 'react';
 import ShiftMaster from './Pages/ShiftMaster/ShiftMaster';
 import ViewAttendance from './Pages/ViewAttendance/ViewAttendance';
+import VendorMaster from './Pages/VendorMaster/VendorMaster';
+import DeptMaster from './Pages/DeptMatser/DeptMaster';
 setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/');
 function App() {
 
@@ -164,6 +166,26 @@ function App() {
           element={
             localStorage.getItem('token') ? (
               <ViewAttendance />
+            ) : (
+              <Navigate replace to="/login" />
+            )
+          }>
+        </Route>
+        <Route  exact
+          path="/vendor-master"
+          element={
+            localStorage.getItem('token') ? (
+              <VendorMaster />
+            ) : (
+              <Navigate replace to="/login" />
+            )
+          }>
+        </Route>
+        <Route  exact
+          path="/dept-master"
+          element={
+            localStorage.getItem('token') ? (
+              <DeptMaster />
             ) : (
               <Navigate replace to="/login" />
             )

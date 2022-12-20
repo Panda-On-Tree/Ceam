@@ -55,7 +55,7 @@ const CustomToolbar = ({displayData}) => {
       <SlButton style={{"marginLeft":"20px"}} slot="footer" variant="primary" onClick={()=>{
         setOpenUpSignleOt(true)
       }}>
-          Update Single OT
+          Update Single Reward
         </SlButton>
   );
 }
@@ -64,6 +64,7 @@ const CustomToolbar = ({displayData}) => {
     responsive: 'standard',
     selectableRowsHideCheckboxes: true,
     customToolbar: CustomToolbar ,
+    rowsPerPage:15
 }
 
 function getData() {
@@ -95,6 +96,7 @@ function getData() {
   .catch((err)=>{
     console.log(err);
   })
+  
   
 
 }
@@ -320,16 +322,16 @@ function getRosterOT(){
             navigate("/ot-roster-approve")
         }} >Approve</SlButton>:""}
        
-      <SlButton variant='primary' outline onClick={()=>{
+     {/*  <SlButton variant='primary' outline onClick={()=>{
         setSelectMonth(true)
       }}>
       Download Roster Template
-      </SlButton>
+      </SlButton> */}
       <SlButton variant='primary' outline  onClick={()=>{
        
        setOpenUploadOT(true)
       }}>
-        Upload OT Roster
+        Bulk Upload Reward Roster
       </SlButton>
         </div>
      {/*  <SlButton variant='primary' onClick={()=>{
@@ -338,7 +340,7 @@ function getRosterOT(){
         Go Attendence Roster
       </SlButton> */}
     </div>
-    <SlDialog label="Upload Roster OT" open={openUploadOT} onSlRequestClose={() => setOpenUploadOT(false)}>
+    <SlDialog label="Upload Roster Reward" open={openUploadOT} onSlRequestClose={() => setOpenUploadOT(false)}>
   
      <div className='file-input-dialog-main'>
      <input
@@ -392,7 +394,7 @@ function getRosterOT(){
     </SlDialog>
     <div className='table-ceam'>
     {rosterDataOT?<MUIDataTable
-        title="Over Time Roster"  
+        title="Reward Roster"  
         data={rosterDataOT}
         columns={col}
         options={options}
@@ -427,22 +429,21 @@ function getRosterOT(){
           Close
         </SlButton>
     </SlDialog>
-    <SlDialog label="Update/Add Single OT" open={openUpSignleOt} onSlRequestClose={() => setOpenUpSignleOt(false)}>
+    <SlDialog label="Update/Add Single Reward" open={openUpSignleOt} onSlRequestClose={() => setOpenUpSignleOt(false)}>
         <div className='update-ot-single-main'>
         <SlInput label="Employee Code" onSlChange={(e)=>{
           setSignleOtUpData({...signleOtUpData,employee_id:e.target.value})
         }} />
-        <SlInput type="date" label='OT Date' placeholder="Date" onSlChange={(e)=>{
+        <SlInput type="date" label='Reward Date' placeholder="Date" onSlChange={(e)=>{
           console.log(e.target.value);
           let arr = e.target.value.split("-")
           console.log(arr);
           setSignleOtUpData({...signleOtUpData,year:arr[0],month:parseInt(arr[1]),date:parseInt(arr[2])})
           }} />
-        <SlSelect label="OT Type" onSlChange={(e)=>{
+        <SlSelect label="Reward Type" onSlChange={(e)=>{
            setSignleOtUpData({...signleOtUpData,ot_type:e.target.value})
         }}>
-              <SlMenuItem key="empyt" value="">Remove OT</SlMenuItem>
-
+            <SlMenuItem value=''>Remove</SlMenuItem>
           {otList?.map((item,i)=>{
             return(
               <SlMenuItem key={`${i}ot`} value={item.shift_character}>{item.shift_character}</SlMenuItem>

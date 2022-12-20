@@ -60,29 +60,11 @@ function CeamOtApprove() {
           .then((res)=>{
             console.log(res);
             getOtRosterApproval()
-            toast.success(res.data.message, {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: false,
-              progress: undefined,
-              theme: "colored",
-              });
+            toast.success(res.data.message);
           })
           .catch((err)=>{
             getOtRosterApproval()
-            toast.error(err.response.data.message, {
-              position: "top-right",
-              autoClose: 2000,
-              hideProgressBar: true,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: false,
-              progress: undefined,
-              theme: "colored",
-              });
+            toast.error(err.response.data.message);
           })
     }
  

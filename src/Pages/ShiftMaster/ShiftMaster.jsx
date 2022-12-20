@@ -72,7 +72,7 @@ function ShiftMaster() {
         },
         {
             name: "ot_max_hours",
-            label:"OT Max Hours",
+            label:"Reward Max Hours",
             options: {
              filter: true,
              sort: false
@@ -89,6 +89,22 @@ function ShiftMaster() {
         {
             name: "shift_max_intime",
             label:"Shift Max Intime",
+            options: {
+             filter: true,
+             sort: false
+            }
+        },
+        {
+          name: "shift_min_outtime",
+          label:"Shift Min Out Time",
+          options: {
+           filter: true,
+           sort: false
+          }
+      },
+        {
+            name: "shift_max_outtime",
+            label:"Shift Max OuT Time",
             options: {
              filter: true,
              sort: false
@@ -125,7 +141,8 @@ function ShiftMaster() {
         sort:false,
         customBodyRender:()=>{
 
-        }
+        },
+        rowsPerPage:15
 
 
         //customToolbar: CustomToolbar ,
@@ -229,10 +246,10 @@ function ShiftMaster() {
             shiftType.current = e.target.value
         }}>
             <SlMenuItem value="shift">Shift</SlMenuItem>
-            <SlMenuItem value="ot">OT</SlMenuItem>
+            <SlMenuItem value="ot">Reward</SlMenuItem>
         </SlSelect>
         {shiftType.current == "ot"?<div>
-        <SlInput label="OT Max Hours" onSlChange={(e)=>{
+        <SlInput label="Reward Max Hours" onSlChange={(e)=>{
             setNewShiftMasterData({...newShiftMasterData,ot_max_hours:e.target.value})
         }} />
         </div>:""}

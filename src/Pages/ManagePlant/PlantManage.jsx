@@ -40,6 +40,7 @@ function PlantManage() {
         tableBodyMaxHeight: '64vh',
         responsive: 'standard',
         selectableRowsHideCheckboxes: true,
+        rowsPerPage:15
         //customToolbar: CustomToolbar ,
     }
 
@@ -55,14 +56,6 @@ function PlantManage() {
         {
             name: "division",
             label: "Division",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "active",
-            label: "Active",
             options: {
                 filter: true,
                 sort: true,
@@ -111,16 +104,7 @@ function PlantManage() {
           })
           .then((res)=>{
             console.log(res);
-            toast.success(res.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.success(res.data.message);
             setCreatePlant({
                 "plant":"",
                 "division":"",
@@ -130,16 +114,7 @@ function PlantManage() {
           })
           .catch((err)=>{
             console.log(err);
-            toast.error(err.response.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.error(err.response.data.message);
           })
     }
 
@@ -156,31 +131,13 @@ function PlantManage() {
           })
           .then((res)=>{
             console.log(res);
-            toast.success(res.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.success(res.data.message);
                 getPlantData()
            
           })
           .catch((err)=>{
             console.log(err);
-            toast.error(err.response.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.error(err.response.data.message);
           })
     }
     function sendRosterLocationDelete(){
@@ -196,30 +153,12 @@ function PlantManage() {
           .then((res)=>{
             console.log(res);
             
-            toast.success(res.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.success(res.data.message);
                 getPlantData()
           })
           .catch((err)=>{
             console.log(err);
-            toast.error(err.response.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.error(err.response.data.message);
           })
     }
 
@@ -238,8 +177,7 @@ function PlantManage() {
         .catch((err)=>{
           console.log(err);
         })
-      
-      
+ 
       }
 
     function getPlantData() {

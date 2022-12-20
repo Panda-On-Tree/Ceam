@@ -103,14 +103,6 @@ function ManageApprovers() {
             }
         },
         {
-            name: "active",
-            label: "Active",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
             name: "Edit",
             options: {
                 filter: false,
@@ -182,30 +174,12 @@ function ManageApprovers() {
                 "approval_type":"",
                 "employee_id":localStorage.getItem("employee_id")
             })
-            toast.success(res.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.success(res.data.message);
                 getRosterApprovers()
           })
           .catch((err)=>{
             console.log(err);
-            toast.error(err.response.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.error(err.response.data.message);
           })
     }
 
@@ -221,31 +195,13 @@ function ManageApprovers() {
           })
           .then((res)=>{
             console.log(res);
-            toast.success(res.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.success(res.data.message);
                 getRosterApprovers()
           
           })
           .catch((err)=>{
             console.log(err);
-            toast.error(err.response.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.error(err.response.data.message);
           })
     }
     function sendRosterApproverUpdate() {
@@ -260,30 +216,12 @@ function ManageApprovers() {
           })
           .then((res)=>{
             console.log(res);
-            toast.success(res.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.success(res.data.message);
                 getRosterApprovers()
           })
           .catch((err)=>{
             console.log(err);
-            toast.error(err.response.data.message, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: false,
-                progress: undefined,
-                theme: "colored",
-                });
+            toast.error(err.response.data.message);
           })
     }
     function getData() {
@@ -438,7 +376,7 @@ function ManageApprovers() {
             setNewApproverData({...newApproverData,approval_type:e.target.value})
 
         }}>
-            <SlMenuItem value="ot">OT</SlMenuItem>
+            <SlMenuItem value="ot">Reward</SlMenuItem>
             <SlMenuItem value="roster">Roster</SlMenuItem>
         </SlSelect>
         <SlSelect  style={{"marginBottom":"15px"}} value={newApproverData.level_1_approver}  label="Select Level 1" onSlChange={(e)=>{
