@@ -50,6 +50,8 @@ min-width: 100%;
 .add-emp-input{
   flex-basis: 23%;
 }
+
+
 @media only screen and (max-width: 1200px) {
   .add-emp-input{
     flex-basis: 30%;

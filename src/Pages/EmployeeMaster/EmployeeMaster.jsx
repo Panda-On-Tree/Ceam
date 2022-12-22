@@ -10,8 +10,15 @@ import { toast } from 'react-toastify'
 
 
 function EmployeeMaster() {
-  const [vendorList, setVendorList] = useState()
-  const [divisionList, setDivisionList] = useState([])
+    
+    const [authVerificationData, setAuthVerificationData] = useState()
+    const [empAadharName, setEmpAadharName] = useState()
+    const [empAadharCode, setEmpAadharCode] = useState()
+    const [token, setToken] = useState()
+    const [aadharOtp, setAadharOtp] = useState()
+
+    const [vendorList, setVendorList] = useState()
+    const [divisionList, setDivisionList] = useState([])
 
     const [plantList, setPlantList] = useState()
     const [deptList, setDeptList] = useState()
@@ -50,6 +57,8 @@ function EmployeeMaster() {
 
     /* Dialog States */
     const [openAddEmp, setOpenAddEmp] = useState(false)
+    const [openAadharDialog, setOpenAadharDialog] = useState(false)
+
     useEffect(()=>{
         getEmployees()
         getCategory()
@@ -58,6 +67,100 @@ function EmployeeMaster() {
         getVendorlist()
     },[])
 
+
+    function sendAadharOtp(aad_number){
+      const data ={ 
+          "username":"test",
+          "password":"test@123"
+      }
+      axios({
+        method: 'post',
+        url: `${baseurl.base_url}/verification/auth`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data
+      })
+      .then((res)=>{
+        console.log(res);
+        setToken(res.data.data.token)
+        axios({
+          method:"post",
+          url:`${baseurl.base_url}/verification/aadhar-okyc`,
+          headers:{
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${res.data.data.token}`
+          },
+          data : {
+            aadhar_number:aad_number
+          }
+        })
+        .then((res)=>{
+          console.log(res);
+          toast.success(res.data.message)
+          setAuthVerificationData(res.data.data)
+        })
+        .catch((err)=>{
+          console.log(err);
+          toast.success("An error Occures")
+        })
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+
+    }
+
+    function sendOtpToVerify(){
+      const data ={
+        "otp":aadharOtp,
+        "ref_id":authVerificationData.ref_id,
+        "name_on_aadhar":empAadharName
+    }
+    console.log(data);
+      axios({
+        method:"post",
+        url:`${baseurl.base_url}/verification/aadhar-otp`,
+        headers:{
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        data
+      })
+      .then((res)=>{
+        console.log(res);
+        toast.success(res.data.message);
+        setOpenAadharDialog(false)
+        if(res.data.data.status === "VALID"){
+          console.log("valid");
+          const data ={
+            employee_id:empAadharCode
+          }
+          axios({
+            method:"post",
+            url:`${baseurl.base_url}/mhere/verify-ceam-employee-aadhar`,
+            headers:{
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            data
+          })
+          .then((res)=>{
+            console.log(res);
+            getEmployees()
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
+        }
+
+      })
+      .catch((err)=>{
+        console.log(err);
+        toast.error(err.response.data.data.message)
+      })
+      
+    }
     
     const column =[
         {
@@ -149,6 +252,7 @@ function EmployeeMaster() {
           }
             }
         },
+      
         {
             name: "verify_aadhar",
             label:"Verify Aadhar",
@@ -157,11 +261,21 @@ function EmployeeMaster() {
              sort: false,
              customBodyRenderLite: (dataIndex, rowIndex) => {
                 return (
-                   <div className="edit-button-main" style={{"cursor":"not-allowed"}}>
-                    <SlTag variant='warning' size="small" className="tag-row" onClick={e => {
-                    }} style={{"cursor":"not-allowed","pointerEvents":"none" }}>
+                   <div className="edit-button-main">
+                    {!empData[dataIndex].aadhar_verify_flag?<SlTag variant='warning' size="small" className="tag-row" onClick={e => {
+                      setOpenAadharDialog(true)
+                      sendAadharOtp(empData[dataIndex].aadhar_card_number)
+                      setEmpAadharName(empData[dataIndex].employee_name)
+                      setEmpAadharCode((empData[dataIndex].employee_id))
+                      
+                    }} >
                         Verify
-                    </SlTag>
+                    </SlTag>:<SlTag variant='success' size="small" className="tag-row" onClick={e => {
+                    }} style={{"cursor":"not-allowed","pointerEvents":"none" }}>
+                        Verified
+                    </SlTag>}
+                    
+                   
                    </div>
                 );
             }
@@ -193,7 +307,7 @@ function EmployeeMaster() {
             },
           })
           .then((res)=>{
-          //  console.log(res);
+            console.log(res);
             setEmpData(res.data.data)
             if(res.data.data.length){
               let myArray = Object.keys(res.data.data[0])
@@ -412,7 +526,7 @@ function EmployeeMaster() {
            <SlButton className="plant-add-button" variant="primary"  onClick={()=>{
             sendEmployeeBulk()
                 //setAddPlantDialog(true)
-            }}>Bulk Upload</SlButton>
+            }}>Bulk Upload Employee</SlButton>
            </div>
             <div className='ceam-main-buttons' style={{"display":"flex","gap":"25px", "flexWrap":"wrap"}}>
             <SlButton className="plant-add-button" variant="warning"  onClick={()=>{
@@ -514,7 +628,19 @@ function EmployeeMaster() {
         </SlButton>
             </div>
       </SlDialog>
-
+      <SlDialog label="Dialog" open={openAadharDialog} onSlRequestClose={() => setOpenAadharDialog(false)}>
+        <SlInput noSpinButtons className='aadhar-otp-input' type='number' label='Enter OTP' onSlChange={(e)=>{
+            setAadharOtp(e.target.value)
+        }}></SlInput>
+        <SlButton style={{"marginRight":"20px"}} slot="footer" variant="success" outline onClick={() => {
+          sendOtpToVerify()
+        }}>
+          Submit
+        </SlButton>
+        <SlButton slot="footer" variant="primary" onClick={() => setOpenAadharDialog(false)}>
+          Close
+        </SlButton>
+      </SlDialog>
     </div>
   )
 }
