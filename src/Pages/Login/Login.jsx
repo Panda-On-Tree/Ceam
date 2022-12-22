@@ -86,7 +86,7 @@ function Login() {
                     },
                     data
                   })
-                    navigate('/')
+                    navigate('/home')
                     window.location.reload()
                 }
                 else{
