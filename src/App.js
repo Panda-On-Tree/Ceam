@@ -24,6 +24,7 @@ import ShiftMaster from './Pages/ShiftMaster/ShiftMaster';
 import ViewAttendance from './Pages/ViewAttendance/ViewAttendance';
 import VendorMaster from './Pages/VendorMaster/VendorMaster';
 import DeptMaster from './Pages/DeptMatser/DeptMaster';
+import Home from './Pages/Home/Home';
 setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/');
 function App() {
 
@@ -85,6 +86,16 @@ function App() {
           element={
             localStorage.getItem('token') ? (
               <CeamRoster />
+            ) : (
+              <Navigate replace to="/login" />
+            )
+          }>
+        </Route>
+        <Route   exact
+          path="/home"
+          element={
+            localStorage.getItem('token') ? (
+              <Home />
             ) : (
               <Navigate replace to="/login" />
             )

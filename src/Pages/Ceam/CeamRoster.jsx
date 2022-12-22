@@ -202,7 +202,7 @@ function getDivision(item) {
     setOpenOT(false)
   }
 
-  function onSubmitOT(dataone){
+  /* function onSubmitOT(dataone){
     console.log(dataone);
     const data = {
       month:uploadMonth,
@@ -226,7 +226,7 @@ function getDivision(item) {
       console.log(err);
     })
 
-  }
+  } */
 
   function onSubmit(){
    let arr = uploadDateData.split("-")

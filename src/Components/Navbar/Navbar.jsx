@@ -81,7 +81,9 @@ const getDays = (year, month) => {
         <nav className='navbar-inner'>
             <div className='navbar-logo'>
                 <img src={logo}  className='navbar-logo' alt="" />  
-                <h2 className='navbar-head'>CEAM</h2>
+                <h2 className='navbar-head' onClick={()=>{
+                     navigate("/home")
+                }}>CEAM</h2>
             </div>
            
             <div className='nav-items-main'>

@@ -59,6 +59,7 @@
     font-size: 24px;
     color: rgb(87, 87, 87);
     font-family: 'Poppins', sans-serif;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 800px) {
