@@ -109,12 +109,12 @@ border-radius: 5px;
     justify-content: center;
 }
 .logi-main-right-inner{
-    background-image: url('./microtek.svg');    
+    background-image: url('./timesheet.png');    
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    width: 50%;
-    height: 50%;
+    width: 90%;
+    height: 70%;
 }
 
 @keyframes abc{

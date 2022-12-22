@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './Navbar.css'
 import { SlButton, SlDialog, SlDivider, SlDropdown, SlIcon, SlMenu, SlMenuItem } from '@shoelace-style/shoelace/dist/react/index';
-import logo from './logo2.png'
+import logo from './time2.jpg'
 import template from './assets/employee_upload_template.xlsx'
 import { useNavigate } from 'react-router-dom';
 import thirtyonedays from './templates/31daysTemplate.xlsx'
@@ -81,8 +81,9 @@ const getDays = (year, month) => {
         <nav className='navbar-inner'>
             <div className='navbar-logo'>
                 <img src={logo}  className='navbar-logo' alt="" />  
+                <h2 className='navbar-head'>CEAM</h2>
             </div>
-            <h2 className='navbar-head'>Attendance Roster Management</h2>
+           
             <div className='nav-items-main'>
             <SlDropdown distance={5} className="nav-item">
                 <SlButton className='nav-item-button' slot="trigger" caret>
