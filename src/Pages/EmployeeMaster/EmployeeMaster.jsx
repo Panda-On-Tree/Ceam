@@ -7,9 +7,14 @@ import './EmployeeMaster.css'
 import * as xlsx from 'xlsx';
 import { baseurl } from '../../api/apiConfig'
 import { toast } from 'react-toastify'
-
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function EmployeeMaster() {
+
+    /* Backdrop state */
+    const [openBackdrop, setOpenBackdrop] = useState(false)
+    /* Backdrop state */
     
     const [authVerificationData, setAuthVerificationData] = useState()
     const [empAadharName, setEmpAadharName] = useState()
@@ -97,15 +102,20 @@ function EmployeeMaster() {
         })
         .then((res)=>{
           console.log(res);
+          setOpenBackdrop(false)
           toast.success(res.data.message)
           setAuthVerificationData(res.data.data)
         })
         .catch((err)=>{
           console.log(err);
+          setOpenBackdrop(false)
+
           toast.success("An error Occures")
         })
       })
       .catch((err)=>{
+        setOpenBackdrop(false)
+
         console.log(err);
       })
 
@@ -128,6 +138,8 @@ function EmployeeMaster() {
         data
       })
       .then((res)=>{
+        
+
         console.log(res);
         toast.success(res.data.message);
         setOpenAadharDialog(false)
@@ -147,15 +159,21 @@ function EmployeeMaster() {
           })
           .then((res)=>{
             console.log(res);
+          setOpenBackdrop(false)
+
             getEmployees()
           })
           .catch((err)=>{
+          setOpenBackdrop(false)
+
             console.log(err);
           })
         }
 
       })
       .catch((err)=>{
+        setOpenBackdrop(false)
+
         console.log(err);
         toast.error(err.response.data.data.message)
       })
@@ -264,6 +282,7 @@ function EmployeeMaster() {
                    <div className="edit-button-main">
                     {!empData[dataIndex].aadhar_verify_flag?<SlTag variant='warning' size="small" className="tag-row" onClick={e => {
                       setOpenAadharDialog(true)
+                      setOpenBackdrop(true)
                       sendAadharOtp(empData[dataIndex].aadhar_card_number)
                       setEmpAadharName(empData[dataIndex].employee_name)
                       setEmpAadharCode((empData[dataIndex].employee_id))
@@ -634,6 +653,8 @@ function EmployeeMaster() {
         }}></SlInput>
         <SlButton style={{"marginRight":"20px"}} slot="footer" variant="success" outline onClick={() => {
           sendOtpToVerify()
+          setOpenBackdrop(true)
+
         }}>
           Submit
         </SlButton>
@@ -641,6 +662,14 @@ function EmployeeMaster() {
           Close
         </SlButton>
       </SlDialog>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openBackdrop}
+        onClick={()=>{setOpenBackdrop(false)}}
+
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   )
 }
