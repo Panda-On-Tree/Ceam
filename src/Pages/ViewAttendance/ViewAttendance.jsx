@@ -360,10 +360,11 @@ function ViewAttendance() {
 
             )            
             })}
-             <SlSelect className='add-emp-input' label="Select Gender" onSlChange={(e)=>{setSendEmployeeData({...sendEmployeeData,gender:e.target.value})}}>
+            
+            </SlSelect>
+            <SlSelect className='add-emp-input' label="Select Gender" onSlChange={(e)=>{setSendEmployeeData({...sendEmployeeData,gender:e.target.value})}}>
               <SlMenuItem value="M">Male</SlMenuItem>
               <SlMenuItem value="F">Female</SlMenuItem>
-            </SlSelect>
             </SlSelect>
                     <SlInput type='date' label='Start Date' onSlChange={(e)=> {addDays(e.target.value);setSendEmployeeData({...sendEmployeeData,start_date:e.target.value})}}></SlInput>
                     <SlInput type='date' label='End Date' max={searchMaxDate} onSlChange={(e)=> setSendEmployeeData({...sendEmployeeData,end_date:e.target.value})}></SlInput>

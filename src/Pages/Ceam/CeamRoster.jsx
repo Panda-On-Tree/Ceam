@@ -63,7 +63,7 @@ const [shiftList, setShiftList] = useState()
     },
   })
   .then((res)=>{
-    console.log(res);
+    
     setShiftList(res.data.data)
 
   })
@@ -89,7 +89,7 @@ function getData() {
     },
   })
   .then((res)=>{
-    console.log(res);
+ 
     setPlantList(res.data.data)
   })
   .catch((err)=>{
@@ -129,7 +129,7 @@ function getDivision(item) {
       year: parseInt(arr[0])
     }
     
-    console.log(data);
+    
     axios({
       method: 'post',
       url: `${baseurl.base_url}/mhere/get-roster`,
@@ -139,7 +139,6 @@ function getDivision(item) {
       data,
     })
     .then((res)=>{
-      console.log(res.data.data);
       if(res.data.data.length){
         const columns = Object.keys(res.data.data[0]);
         const statusIndex = columns.indexOf("status");

@@ -139,8 +139,6 @@ function EmployeeMaster() {
       })
       .then((res)=>{
         
-
-        console.log(res);
         toast.success(res.data.message);
         setOpenAadharDialog(false)
         if(res.data.data.status === "VALID"){
@@ -401,6 +399,28 @@ function EmployeeMaster() {
       .then((res)=>{
         console.log(res);
         toast.success(res.data.message);
+        setSingleEmployeeUpload({
+          employee_id: "",
+          employee_name: "",
+          vendor_code: "",
+          vendor_name: "",
+          gender: "",
+          base_location: "",
+          aadhar_card_number: "",
+          category:"",
+          division:"",
+          mobile_number: "",
+          DOJ: "",
+          father_name:"",
+          department:"",
+          DOB:"",
+          uan_number:"",
+          esic_number:"",
+          bank_account_number:"",
+          ifsc_code:"",
+          address:"",
+          uploaded_by: localStorage.getItem("employee_id")
+      })
           getEmployees()
       })
       .catch((err)=>{
