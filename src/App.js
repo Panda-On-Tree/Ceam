@@ -32,7 +32,7 @@ function App() {
 
   let navigate = useNavigate()
   useEffect(()=>{
-   // verifyToken()
+    verifyToken()
   },[])
 
   const verifyToken = () => {
