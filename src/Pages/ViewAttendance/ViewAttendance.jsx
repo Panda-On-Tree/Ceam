@@ -73,6 +73,14 @@ function ViewAttendance() {
             }
         },
         {
+            name: "base_location",
+            label:"Plant",
+            options: {
+             filter: true,
+             sort: false
+            }
+        },
+        {
             name: "vendor_name",
             label:"Vendor Name",
             options: {
