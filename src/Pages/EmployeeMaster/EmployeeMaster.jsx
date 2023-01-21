@@ -1,4 +1,4 @@
-import { SlButton, SlDialog, SlInput, SlMenuItem, SlSelect, SlTag } from '@shoelace-style/shoelace/dist/react/index'
+import { SlButton, SlDialog, SlIcon, SlInput, SlMenuItem, SlSelect, SlTag } from '@shoelace-style/shoelace/dist/react/index'
 import axios from 'axios'
 import MUIDataTable from 'mui-datatables'
 import React, { useState } from 'react'
@@ -60,10 +60,19 @@ function EmployeeMaster() {
         
     })
 
+    const [deactivateId, setDeactivateId] = useState("")
+
+    const [empUpdateData, setEmpUpdateData] = useState({
+      location:"",
+      division:""
+    })
+
+
     /* Dialog States */
     const [openAddEmp, setOpenAddEmp] = useState(false)
+    const [openUpdateEmp, setOpenUpdateEmp] = useState(false)
     const [openAadharDialog, setOpenAadharDialog] = useState(false)
-
+    const [openDeactivate, setOpenDeactivate] = useState(false)
     useEffect(()=>{
         getEmployees()
         getCategory()
@@ -228,6 +237,14 @@ function EmployeeMaster() {
             }
         },
         {
+            name: "division",
+            label:"Division",
+            options: {
+             filter: true,
+             sort: false
+            }
+        },
+        {
             name: "aadhar_card_number",
             label:"Aadhar Card Number",
             options: {
@@ -251,6 +268,23 @@ function EmployeeMaster() {
              sort: false
             }
         },
+        {
+          name: "active_flag",
+          label:"Active",
+          options: {
+           filter: true,
+           sort: false,
+           customBodyRenderLite: (dataIndex, rowIndex) => {
+
+            //console.log(dataIndex);
+            return(
+              <div>
+                {empData[dataIndex].active_flag?"true":"false"}
+              </div>
+            )
+        }
+          }
+      },  
         {
             name: "frt_verify_flag",
             label:"FRT Verified",
@@ -299,6 +333,36 @@ function EmployeeMaster() {
 
             }
         },
+        {
+          name: "deactivate",
+          label:"Actions",
+          options: {
+           filter: true,
+           sort: false,
+           customBodyRenderLite: (dataIndex, rowIndex) => {
+              return (
+                 <div className="edit-button-main" style={{gap:'15px'}}>
+                 <SlTag variant='danger' size="small" className="tag-row" onClick={() => {
+                    setDeactivateId(empData[dataIndex].employee_id);
+                    setOpenDeactivate(true)
+                  }}>
+                     <SlIcon name='trash'></SlIcon>
+                    
+                  </SlTag>
+                  <SlTag variant='success' size="small" className="tag-row" onClick={() => {
+                   setDeactivateId(empData[dataIndex].employee_id);
+
+                    setOpenUpdateEmp(true)
+                  }}>
+                    <SlIcon name='pencil-square'></SlIcon>
+                    
+                  </SlTag>
+                 </div>
+              );
+          }
+
+          }
+      },
         
     ]
     
@@ -324,7 +388,7 @@ function EmployeeMaster() {
             },
           })
           .then((res)=>{
-            console.log(res);
+           // console.log(res);
             setEmpData(res.data.data)
             if(res.data.data.length){
               let myArray = Object.keys(res.data.data[0])
@@ -553,6 +617,51 @@ function EmployeeMaster() {
 }
 
 
+function sendDeactivate(){
+  console.log("hello");
+  axios({
+    method: 'post',
+    url: `${baseurl.base_url}/mhere/delete-ceam-employee-master`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data:{
+      employee_id:deactivateId
+    }
+  })
+  .then((res)=>{
+    console.log(res);
+    toast.success(res.data.message) 
+    setOpenDeactivate(false);
+    getEmployees()
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+}
+
+  function sendEmployeeUpdate(){
+    const data = empUpdateData
+    data.employee_id = deactivateId
+    console.log(data);
+    axios({
+      method: 'post',
+      url: `${baseurl.base_url}/mhere/update-ceam-employee-master`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+     data
+    })
+    .then((res)=>{
+      console.log(res);
+      toast.success(res.data.message) 
+      getEmployees()
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  }
+
   return (
     <div className='employee-master-main'>
          <div className="employee-master-buttons-main">
@@ -690,6 +799,40 @@ function EmployeeMaster() {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <SlDialog label="Deactivate" open={openDeactivate} onSlRequestClose={() => setOpenDeactivate(false)}>
+         Deactivate Employee - {deactivateId}
+        <SlButton slot="footer" variant="warning" style={{marginRight:'30px'}} onClick={sendDeactivate}>
+          Deactiavte
+        </SlButton>
+        <SlButton slot="footer" variant="primary" onClick={() => setOpenDeactivate(false)}>
+          Cancel
+        </SlButton>
+      </SlDialog>
+      <SlDialog label="Update" open={openUpdateEmp} onSlRequestClose={() => setOpenUpdateEmp(false)}>
+     <div style={{display:'flex', flexDirection:'column', gap:'20px'}}>
+     <SlSelect className='add-emp-input' label="Select Location" onSlChange={(e)=>{ getDivision(e.target.value);setEmpUpdateData({...empUpdateData, location:e.target.value})}}>
+            {
+                plantList?.map((item,i)=>{
+             return(
+              <SlMenuItem key={`${i}plant`} value={item.plant}>{item.plant}</SlMenuItem>
+             )})}
+            </SlSelect>
+            <SlSelect className='add-emp-input' label="Select Division" onSlChange={(e)=>{setEmpUpdateData({...empUpdateData, division:e.target.value})}}>
+            {divisionList?.map((item,i)=>{
+            return(
+              <SlMenuItem key={`${i}divisionu`} value={item.division}>{item.division}</SlMenuItem>
+
+            )            
+            })}
+            </SlSelect>
+     </div>
+        <SlButton slot="footer" variant="success" style={{"marginRight":"20px"}}  onClick={sendEmployeeUpdate}>
+          Update
+        </SlButton>
+        <SlButton slot="footer" variant="primary" onClick={() => setOpenUpdateEmp(false)}>
+          Close
+        </SlButton>
+      </SlDialog>
     </div>
   )
 }
