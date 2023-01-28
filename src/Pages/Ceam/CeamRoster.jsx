@@ -251,6 +251,7 @@ function getDivision(item) {
     .then((res)=>{
       console.log(res);
       toast.success(res.data.message);
+      setOpenUpload(false)
     })
     .catch((err)=>{
     
@@ -324,7 +325,7 @@ const readUploadFile = (e) => {
       reader.readAsArrayBuffer(e.target.files[0])
   }
 }
-
+//console.clear()
 
   return (
     <div className="ceam-roster-main">
@@ -489,7 +490,6 @@ const readUploadFile = (e) => {
         }} />
         <SlButton slot="footer" style={{"marginRight":"20px"}} variant="success" onClick={() => {
           onSubmit()
-          setOpenUpload(false)
         }}>
           Upload
         </SlButton>
