@@ -132,7 +132,7 @@ function App() {
             )
           }>
         </Route>
-        <Route   exact
+      {/*   <Route   exact
           path="/plant-manage"
           element={
             localStorage.getItem('token') ? (
@@ -141,8 +141,8 @@ function App() {
               <Navigate replace to="/login" />
             )
           }>
-        </Route>
-        <Route   exact
+        </Route> */}
+       {/*  <Route   exact
           path="/approve-manage"
           element={
             localStorage.getItem('token') ? (
@@ -151,7 +151,7 @@ function App() {
               <Navigate replace to="/login" />
             )
           }>
-        </Route>
+        </Route> */}
         <Route   exact
           path="/employee-master"
           element={
@@ -162,7 +162,7 @@ function App() {
             )
           }>
         </Route>
-        <Route   exact
+        {/* <Route   exact
           path="/shift-master"
           element={
             localStorage.getItem('token') ? (
@@ -171,7 +171,7 @@ function App() {
               <Navigate replace to="/login" />
             )
           }>
-        </Route>
+        </Route> */}
         <Route   exact
           path="/view-attendance"
           element={
@@ -192,7 +192,7 @@ function App() {
             )
           }>
         </Route>
-        <Route  exact
+       {/*  <Route  exact
           path="/dept-master"
           element={
             localStorage.getItem('token') ? (
@@ -201,7 +201,7 @@ function App() {
               <Navigate replace to="/login" />
             )
           }>
-        </Route>
+        </Route> */}
         </Route>
         <Route element={<Auth />}>
         <Route   exact

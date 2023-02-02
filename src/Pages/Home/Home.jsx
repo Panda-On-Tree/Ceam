@@ -20,7 +20,7 @@ function Home() {
             <div onClick={()=>{
                   navigate("/employee-master")
                 }}>Employee Management</div>
-            <div onClick={()=>{
+           {/*  <div onClick={()=>{
                    navigate("/approve-manage")
                 }}>Manage Approver</div>
             <div onClick={()=>{
@@ -31,7 +31,7 @@ function Home() {
                 }}>Plant Master</div>
             <div onClick={()=>{
                   navigate("/vendor-master")
-                }}>Vendor Master</div>
+                }}>Vendor Master</div> */}
         </div>
     </div>
   )
