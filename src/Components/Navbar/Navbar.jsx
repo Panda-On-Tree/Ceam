@@ -105,20 +105,18 @@ const getDays = (year, month) => {
                     Manage
                 </SlButton>
                 <SlMenu>
-               
-               
-                <SlMenuItem onClick={()=>{
+                {/* <SlMenuItem onClick={()=>{
                      navigate("/plant-manage")
                 }}>Manage Plant</SlMenuItem>
                 <SlMenuItem onClick={()=>{
                      navigate("/approve-manage")
-                }}>Manage Approver</SlMenuItem>
+                }}>Manage Approver</SlMenuItem> */}
                 <SlMenuItem onClick={()=>{
                      navigate("/employee-master")
                 }}>Employee Management</SlMenuItem>
-                <SlMenuItem onClick={()=>{
+                {/* <SlMenuItem onClick={()=>{
                      navigate("/shift-master")
-                }}>Shift/Reward Master</SlMenuItem>
+                }}>Shift/Reward Master</SlMenuItem> */}
                
                 <SlMenuItem onClick={()=>{
                      navigate("/vendor-master")
@@ -128,6 +126,7 @@ const getDays = (year, month) => {
                 }}>Dept. Master</SlMenuItem> */}
                 </SlMenu>
             </SlDropdown> 
+
             <SlDropdown distance={5} className="nav-item">
                 <SlButton className='nav-item-button' slot="trigger" caret>
                     Services
