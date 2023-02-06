@@ -138,7 +138,7 @@ function Login() {
                             }}  />
                         </div>
                         <div className="logi-forget-link">
-								<a href="https://microtek.tech/ess/forget-password" target="_blank">
+								<a href="https://internal.microtek.tech:8443/ess/forget-password" target="_blank">
 									Forgot Password?
 								</a>
 							</div>
