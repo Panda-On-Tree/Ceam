@@ -5,6 +5,7 @@ import './Login.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { baseurl } from '../../api/apiConfig';
+import { toast } from 'react-toastify';
 
 
 
@@ -86,8 +87,9 @@ function Login() {
                     },
                     data
                   })
-                    navigate('/home')
-                    window.location.reload()
+                  navigate('/home')
+                  window.location.reload()
+                    
                 }
                 else{
                     alert("module access not allowed")
@@ -96,6 +98,7 @@ function Login() {
                 //localStorage.setItem('module_access', JSON.stringify(res.data.data))
               })
               .catch((err)=>{
+                  toast.error(err.response.data.message)
                   document.getElementById("login-button").disabled = false
                 console.log(err);
               })
@@ -103,6 +106,7 @@ function Login() {
            
           })
           .catch(function (err) {
+            toast.error(err.response.data.message)
             console.log(err)
             document.getElementById("login-button").disabled = false
           })
