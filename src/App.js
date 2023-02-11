@@ -1,10 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import { Navigate, Outlet, Route, Routes, useNavigate } from 'react-router-dom'
-import Ceam from './Pages/Ceam/Ceam';
 import CeamRoster from './Pages/Ceam/CeamRoster';
 import '@shoelace-style/shoelace/dist/themes/light.css';
-
 import '@shoelace-style/shoelace/dist/components/icon/icon.js'
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path';
 import CeamOtRoster from './Pages/Ceam/CeamOtRoster';
@@ -12,28 +9,24 @@ import Login from './Pages/Login/Login';
 import CeamApprove from './Pages/CeamApprove/CeamApprove';
 import CeamOtApprove from './Pages/CeamApprove/CeamOtApprove';
 import Navbar from './Components/Navbar/Navbar';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import PlantManage from './Pages/ManagePlant/PlantManage';
-import ManageApprovers from './Pages/Approval/ManageApprovers';
 import EmployeeMaster from './Pages/EmployeeMaster/EmployeeMaster';
 import axios from 'axios';
 import { baseurl } from './api/apiConfig';
 import { useEffect } from 'react';
-import ShiftMaster from './Pages/ShiftMaster/ShiftMaster';
 import ViewAttendance from './Pages/ViewAttendance/ViewAttendance';
 import VendorMaster from './Pages/VendorMaster/VendorMaster';
-import DeptMaster from './Pages/DeptMatser/DeptMaster';
 import Home from './Pages/Home/Home';
 setBasePath('https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.0.0-beta.86/dist/');
 function App() {
 
-  
+
 
   let navigate = useNavigate()
-  useEffect(()=>{
+  useEffect(() => {
     verifyToken()
-  },[])
+  }, [])
 
   const verifyToken = () => {
     if (!localStorage.getItem('token')) {
@@ -48,7 +41,7 @@ function App() {
       },
     })
       .then(function (response) {
-       // console.log(response.data)
+        // console.log(response.data)
       })
       .catch(function (err) {
         console.log(err)
@@ -68,7 +61,7 @@ function App() {
       <div >
         <Outlet />
       </div>
-      
+
     </div>
   )
   const Auth = () => (
@@ -81,58 +74,58 @@ function App() {
     <div>
       <Routes>
         <Route element={<Dashboard />}>
-        <Route   exact
-          path="/"
-          element={
-            localStorage.getItem('token') ? (
-              <CeamRoster />
-            ) : (
-              <Navigate replace to="/login" />
-            )
-          }>
-        </Route>
-        <Route   exact
-          path="/home"
-          element={
-            localStorage.getItem('token') ? (
-              <Home />
-            ) : (
-              <Navigate replace to="/login" />
-            )
-          }>
-        </Route>
-    
-        <Route   exact
-          path="/ot-roster"
-          element={
-            localStorage.getItem('token') ? (
-              <CeamOtRoster />
-            ) : (
-              <Navigate replace to="/login" />
-            )
-          }>
-        </Route>
-        <Route   exact
-          path="/roster-approve"
-          element={
-            localStorage.getItem('token') ? (
-              <CeamApprove />
-            ) : (
-              <Navigate replace to="/login" />
-            )
-          }>
-        </Route>
-        <Route   exact
-          path="/ot-roster-approve"
-          element={
-            localStorage.getItem('token') ? (
-              <CeamOtApprove />
-            ) : (
-              <Navigate replace to="/login" />
-            )
-          }>
-        </Route>
-      {/*   <Route   exact
+          <Route exact
+            path="/"
+            element={
+              localStorage.getItem('token') ? (
+                <CeamRoster />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }>
+          </Route>
+          <Route exact
+            path="/home"
+            element={
+              localStorage.getItem('token') ? (
+                <Home />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }>
+          </Route>
+
+          <Route exact
+            path="/ot-roster"
+            element={
+              localStorage.getItem('token') ? (
+                <CeamOtRoster />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }>
+          </Route>
+          <Route exact
+            path="/roster-approve"
+            element={
+              localStorage.getItem('token') ? (
+                <CeamApprove />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }>
+          </Route>
+          <Route exact
+            path="/ot-roster-approve"
+            element={
+              localStorage.getItem('token') ? (
+                <CeamOtApprove />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }>
+          </Route>
+          {/*   <Route   exact
           path="/plant-manage"
           element={
             localStorage.getItem('token') ? (
@@ -142,7 +135,7 @@ function App() {
             )
           }>
         </Route> */}
-       {/*  <Route   exact
+          {/*  <Route   exact
           path="/approve-manage"
           element={
             localStorage.getItem('token') ? (
@@ -152,17 +145,17 @@ function App() {
             )
           }>
         </Route> */}
-        <Route   exact
-          path="/employee-master"
-          element={
-            localStorage.getItem('token') ? (
-              <EmployeeMaster />
-            ) : (
-              <Navigate replace to="/login" />
-            )
-          }>
-        </Route>
-        {/* <Route   exact
+          <Route exact
+            path="/employee-master"
+            element={
+              localStorage.getItem('token') ? (
+                <EmployeeMaster />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }>
+          </Route>
+          {/* <Route   exact
           path="/shift-master"
           element={
             localStorage.getItem('token') ? (
@@ -172,27 +165,27 @@ function App() {
             )
           }>
         </Route> */}
-        <Route   exact
-          path="/view-attendance"
-          element={
-            localStorage.getItem('token') ? (
-              <ViewAttendance />
-            ) : (
-              <Navigate replace to="/login" />
-            )
-          }>
-        </Route>
-        <Route  exact
-          path="/vendor-master"
-          element={
-            localStorage.getItem('token') ? (
-              <VendorMaster />
-            ) : (
-              <Navigate replace to="/login" />
-            )
-          }>
-        </Route>
-       {/*  <Route  exact
+          <Route exact
+            path="/view-attendance"
+            element={
+              localStorage.getItem('token') ? (
+                <ViewAttendance />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }>
+          </Route>
+          <Route exact
+            path="/vendor-master"
+            element={
+              localStorage.getItem('token') ? (
+                <VendorMaster />
+              ) : (
+                <Navigate replace to="/login" />
+              )
+            }>
+          </Route>
+          {/*  <Route  exact
           path="/dept-master"
           element={
             localStorage.getItem('token') ? (
@@ -204,22 +197,22 @@ function App() {
         </Route> */}
         </Route>
         <Route element={<Auth />}>
-        <Route   exact
-          path="/login"
-          element={
-              <Login/>
-          }>
-        </Route>
+          <Route exact
+            path="/login"
+            element={
+              <Login />
+            }>
+          </Route>
         </Route>
       </Routes>
       <ToastContainer
-       position= "top-right"
-       autoClose= {2000}
-       hideProgressBar={true}
-       closeOnClick
-       pauseOnHover
-       draggable
-       theme="colored" />
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={true}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored" />
     </div>
   );
 }
