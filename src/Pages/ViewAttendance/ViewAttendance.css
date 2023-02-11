@@ -40,13 +40,6 @@
     }
   }
   
-@media only screen and (max-width: 400px) {
-    .attendance-search-input-main{
-        flex-direction: column;
-        align-items: inherit;
-    }
-  }
-  
 
 .sl-details::part(summary){
     color: #666666;
