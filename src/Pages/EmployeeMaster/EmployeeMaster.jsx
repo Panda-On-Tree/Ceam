@@ -323,30 +323,36 @@ function EmployeeMaster() {
 			options: {
 				filter: true,
 				sort: false,
+        display:JSON.parse(localStorage.getItem('module_access')).ceam_employee_management?true :false,
 				customBodyRenderLite: (dataIndex, rowIndex) => {
 					return (
-						<div className="edit-button-main" style={{ gap: '15px', display:'flex' }}>
-							<SlTag
-								variant="danger"
-								size="small"
-								className="tag-row"
-								onClick={() => {
-									setDeactivateId(empData[dataIndex].employee_id);
-									setOpenDeactivate(true);
-								}}>
-								<SlIcon name="trash"></SlIcon>
-							</SlTag>
-							<SlTag
-								variant="success"
-								size="small"
-								className="tag-row"
-								onClick={() => {
-									setDeactivateId(empData[dataIndex].employee_id);
+						<div>
+							{JSON.parse(localStorage.getItem('module_access')).ceam_employee_management ? (
+								<div className="edit-button-main" style={{ gap: '15px', display: 'flex' }}>
+									{' '}
+									<SlTag
+										variant="danger"
+										size="small"
+										className="tag-row"
+										onClick={() => {
+											setDeactivateId(empData[dataIndex].employee_id);
+											setOpenDeactivate(true);
+										}}>
+										<SlIcon name="trash"></SlIcon>
+									</SlTag>
+									<SlTag
+										variant="success"
+										size="small"
+										className="tag-row"
+										onClick={() => {
+											setDeactivateId(empData[dataIndex].employee_id);
 
-									setOpenUpdateEmp(true);
-								}}>
-								<SlIcon name="pencil-square"></SlIcon>
-							</SlTag>
+											setOpenUpdateEmp(true);
+										}}>
+										<SlIcon name="pencil-square"></SlIcon>
+									</SlTag>{' '}
+								</div>
+							) : null}
 						</div>
 					);
 				},
