@@ -331,10 +331,10 @@ function ViewAttendance() {
 		card.current.disabled = true;
 		card.current.innerText = 'Wait for Download';
 
-		const data = {
-			month: '01',
-			year: '2023',
-		};
+    const data = sendEmployeeData;
+    data.month = sendEmployeeData.start_date.split("-")[1] ||  new Date().getMonth()+1;
+    data.year = sendEmployeeData.start_date.split("-")[0] || new Date().getFullYear();
+    console.log(data);
 		axios({
 			method: 'post',
 			url: `${baseurl.base_url}/mhere/get-attendance-card-by-variable`,
@@ -361,10 +361,11 @@ function ViewAttendance() {
 	function downloadMusterRoll() {
 		muster.current.disabled = true;
 		muster.current.innerText = 'Wait for Download';
-		const data = {
-			month: '01',
-			year: '2023',
-		};
+		const data = sendEmployeeData;
+    data.month = sendEmployeeData.start_date.split("-")[1] ||  new Date().getMonth()+1;
+    data.year = sendEmployeeData.start_date.split("-")[0] || new Date().getFullYear();
+    console.log(data)
+    
 		axios({
 			method: 'post',
 			url: `${baseurl.base_url}/mhere/get-muster-card-by-variable`,
@@ -380,6 +381,7 @@ function ViewAttendance() {
 				window.open(res.data.data, '_blank');
 			})
 			.catch((err) => {
+        toast.error(err.response.data.message);
 				muster.current.innerText = 'Download Muster Roll';
 				console.log(err);
 				muster.current.disabled = false;
