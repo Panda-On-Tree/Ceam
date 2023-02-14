@@ -172,14 +172,14 @@ function ViewAttendance() {
 		console.log(sendEmployeeData);
 		axios({
 			method: 'post',
-			url: `${baseurl.base_url}/mhere/get-attendance-by-variable-new`,
+			url: `${baseurl.base_url}/mhere/get-attendance-by-variable-new2`,
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			data: sendEmployeeData,
 		})
 			.then((res) => {
-				console.table(res.data.data);
+				//console.table(res.data.data);
 
 				let data = res.data.data;
 				data.forEach((item) => {

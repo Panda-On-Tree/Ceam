@@ -22,6 +22,9 @@ function CeamRoster() {
 	const [uploadMonth, setUploadMonth] = useState('2022-10');
 	const [uploadYear, setUploadYear] = useState();
 	const [openUpload, setOpenUpload] = useState(false);
+	const [openUploadPast, setOpenUploadPast] = useState(false);
+	const [openRosterReport, setOpenRosterReport] = useState(false);
+  const [pastFile, setPastFile] = useState()
 	const [openUploadOT, setOpenUploadOT] = useState(false);
 	const [selectMonth, setSelectMonth] = useState(false);
 	const [href, setHref] = useState();
@@ -29,6 +32,11 @@ function CeamRoster() {
 	const [col, setCol] = useState();
 	const [division, setDivision] = useState();
 	const [plantName, setPlantName] = useState();
+	const [rosterReportData, setRosterReportData] = useState({
+		start_date:'',
+		end_date:'',
+		employee_id:localStorage.getItem("employee_id")
+	})
   const [pendingRosterData, setPendingRosterData] = useState({
     start_date:"",
     end_date:""
@@ -163,7 +171,7 @@ function CeamRoster() {
 		console.log(data);
 		axios({
 			method: 'post',
-			url: `${baseurl.base_url}/mhere/upload-roster`,
+			url: `${baseurl.base_url}/mhere/upload-roster-bulk`,
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -265,6 +273,68 @@ function CeamRoster() {
 			});
 	}
 
+  function sendPastDaysRoster() {
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = xlsx.read(data, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const json = xlsx.utils.sheet_to_json(worksheet);
+      const send_data ={
+        roster_data:json,
+        employee_id:localStorage.getItem("employee_id")
+      }
+      console.log(send_data)
+      axios({
+        method: 'post',
+        url: `${baseurl.base_url}/mhere/upload-roster-bulk-past-days`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data:send_data,
+      })
+        .then((res) => {
+          console.log(res);
+          toast.success(res.data.message);
+          setOpenUploadPast(false);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+          console.log(err);
+        });
+    };
+    reader.readAsArrayBuffer(pastFile[0]);
+    
+  }
+
+  function downloadRosterReport(){
+	console.log(rosterReportData);
+	axios({
+        method: 'post',
+        url: `${baseurl.base_url}/mhere/get-upload-roster-bulk-report`,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data:rosterReportData,
+      })
+        .then((res) => {
+          console.log(res);
+          toast.success(res.data.message);
+		  if (res.data.data) {
+			const wb = xlsx.utils.book_new();
+				const ws = xlsx.utils.json_to_sheet(res.data.data);
+				xlsx.utils.book_append_sheet(wb, ws, 'Roster Report');
+				xlsx.writeFile(wb, 'Ceam roster report.xlsx');
+		}
+          setOpenRosterReport(false);
+        })
+        .catch((err) => {
+          toast.error(err.response.data.message);
+          console.log(err);
+        });
+  }
 	return (
 		<div className="ceam-roster-main">
 			{/* <div className="ceam-roster-date-main">
@@ -309,7 +379,7 @@ function CeamRoster() {
 					</SlButton>
 				</div>
 				<div className="ceam-main-buttons">
-					{JSON.parse(localStorage.getItem('module_access'))?.roster_approval ? (
+					{/* {JSON.parse(localStorage.getItem('module_access'))?.roster_approval ? (
 						<SlButton
 							variant="neutral"
 							onClick={() => {
@@ -320,6 +390,14 @@ function CeamRoster() {
 					) : (
 						''
 					)}
+ */}
+ 	<SlButton
+							variant="neutral"
+							onClick={() => {
+								setOpenRosterReport(true)
+							}}>
+							Download Roster Report
+						</SlButton>
 
 					{/*  <SlButton variant="primary" outline onClick={()=>{
           setSelectMonth(true)
@@ -333,6 +411,15 @@ function CeamRoster() {
 						{' '}
 						Upload New Roster
 					</SlButton>
+					{JSON.parse(localStorage.getItem("module_access"))?.back_day_roster_upload?<SlButton
+						variant="primary"
+						outline
+						onClick={() => {
+							setOpenUploadPast(true);
+						}}>
+						
+						Upload Past 2 Days Roster
+					</SlButton>:null}
 				</div>
 			</div>
 			<div className="table-ceam report-table roster-table">
@@ -514,6 +601,45 @@ function CeamRoster() {
           Close
         </SlButton>
       </SlDialog>
+      <SlDialog label="Upload Past 2 Days Roster" open={openUploadPast} onSlRequestClose={() => setOpenUploadPast(false)}>
+          
+          
+      <input
+					style={{ marginBottom: '20px' }}
+					label="Upload File"
+          type='file'
+          onChange={(e)=>{
+            
+            setPastFile(e.target.files)
+          }}
+					
+				/>
+            <SlButton slot="footer" variant='success' style={{marginRight:'15px'}} onClick={() => sendPastDaysRoster()}>
+              Upload
+            </SlButton>
+            <SlButton slot="footer" variant="primary" onClick={() => setOpenPending(false)}>
+              Close
+            </SlButton>
+          </SlDialog>
+      <SlDialog label="Roster Report" open={openRosterReport} onSlRequestClose={() => setOpenRosterReport(false)}>
+          
+		  	<SlInput label='Start Date' type='date' style={{marginBottom:'20px'}} onSlChange={(e)=>{
+				setRosterReportData({...rosterReportData, start_date:e.target.value})
+				console.log(e.target.value);
+			}}></SlInput>
+		  	<SlInput label='End Date' type='date' onSlChange={(e)=>{
+				setRosterReportData({...rosterReportData, end_date:e.target.value})
+				console.log(e.target.value);
+			}}></SlInput>
+          
+    
+            <SlButton slot="footer" variant='success' style={{marginRight:'15px'}} onClick={() => downloadRosterReport()}>
+              Download
+            </SlButton>
+            <SlButton slot="footer" variant="primary" onClick={() => setOpenPending(false)}>
+              Close
+            </SlButton>
+          </SlDialog>
 		</div>
 	);
 }

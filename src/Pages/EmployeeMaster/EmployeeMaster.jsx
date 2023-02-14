@@ -663,6 +663,8 @@ function EmployeeMaster() {
 			},
 		})
 			.then((res) => {
+				console.log(res)
+				
 				const wb = xlsx.utils.book_new();
 				const ws = xlsx.utils.json_to_sheet(res.data.data.in_frt);
 				const ws1 = xlsx.utils.json_to_sheet(res.data.data.in_ceam);
