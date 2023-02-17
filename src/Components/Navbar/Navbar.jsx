@@ -105,7 +105,7 @@ function downloadShiftType(){
       const ws = xlsx.utils.json_to_sheet(res.data.data);
       xlsx.utils.book_append_sheet(wb, ws, 'Shift Type');
       const ws1 = xlsx.utils.json_to_sheet(data);
-      xlsx.utils.book_append_sheet(wb, ws1, 'OT Type');
+      xlsx.utils.book_append_sheet(wb, ws1, 'Reward Type');
       xlsx.writeFile(wb, 'shift/ot type.xlsx');
   
     })
@@ -145,7 +145,7 @@ function downloadShiftType(){
                 <a href={twodaystemplate}  download className='emp-temp-down-link'> <SlMenuItem>Regularization Template</SlMenuItem></a>
                 <SlMenuItem onClick={()=>{
                      downloadShiftType()
-                }}>Shift/OT Master</SlMenuItem>
+                }}>Shift/Reward Master</SlMenuItem>
                 </SlMenu>
             </SlDropdown>
             <SlDropdown distance={5} className="nav-item">
