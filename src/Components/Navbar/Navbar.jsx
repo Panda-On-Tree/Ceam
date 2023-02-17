@@ -8,7 +8,9 @@ import thirtyonedays from './templates/31daysTemplate.xlsx'
 import thirtydays from './templates/30daysTemplate.xlsx'
 import twentyeightdays from './templates/28daysTemplate.xlsx'
 import twentyninedays from './templates/9daysTemplate.xlsx'
+import twodaystemplate from './templates/2days_template.xlsx'
 import axios from 'axios';
+import * as xlsx from 'xlsx';
 import { baseurl } from '../../api/apiConfig';
 function Navbar() {
 
@@ -75,6 +77,49 @@ const getDays = (year, month) => {
     alert("select correct")
   }
 };
+
+function downloadShiftType(){
+	const wb = xlsx.utils.book_new();
+
+		var data ={}
+		
+  axios({
+    method: 'get',
+    url: `${baseurl.base_url}/mhere/get-ot-type`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((res)=>{
+    
+    data = res.data.data
+    axios({
+      method: 'get',
+      url: `${baseurl.base_url}/mhere/get-shift-type`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((res)=>{
+     
+      const ws = xlsx.utils.json_to_sheet(res.data.data);
+      xlsx.utils.book_append_sheet(wb, ws, 'Shift Type');
+      const ws1 = xlsx.utils.json_to_sheet(data);
+      xlsx.utils.book_append_sheet(wb, ws1, 'OT Type');
+      xlsx.writeFile(wb, 'shift/ot type.xlsx');
+  
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+ 
+ 
+}
+
   return (
    <div className='navbar'>
  <div className='navbar-main'>
@@ -97,7 +142,10 @@ const getDays = (year, month) => {
                      getShiftType()
                 }}>Roster Template</SlMenuItem>
                 <a href={template}  download className='emp-temp-down-link'> <SlMenuItem>Employee Template</SlMenuItem></a>
-               
+                <a href={twodaystemplate}  download className='emp-temp-down-link'> <SlMenuItem>Regularization Template</SlMenuItem></a>
+                <SlMenuItem onClick={()=>{
+                     downloadShiftType()
+                }}>Shift/OT Master</SlMenuItem>
                 </SlMenu>
             </SlDropdown>
             <SlDropdown distance={5} className="nav-item">
