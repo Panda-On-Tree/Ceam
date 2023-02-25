@@ -26,7 +26,7 @@ function ViewAttendance() {
   const [plantList, setPlantList] = useState();
   const [deptList, setDeptList] = useState();
   const [categoryList, setCategoryList] = useState();
-  const [openRegularizeDailog, setOpenRegularizeDailog] = useState(true);
+  const [openRegularizeDailog, setOpenRegularizeDailog] = useState(false);
   const [regularizeFile, setRegularizeFile] = useState()
   const [sendEmployeeData, setSendEmployeeData] = useState({
     start_date: "",
