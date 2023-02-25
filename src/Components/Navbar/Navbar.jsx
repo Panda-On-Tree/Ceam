@@ -9,6 +9,7 @@ import thirtydays from './templates/30daysTemplate.xlsx'
 import twentyeightdays from './templates/28daysTemplate.xlsx'
 import twentyninedays from './templates/9daysTemplate.xlsx'
 import twodaystemplate from './templates/2days_template.xlsx'
+import regulartemplate from './templates/regularize_template.xlsx'
 import axios from 'axios';
 import * as xlsx from 'xlsx';
 import { baseurl } from '../../api/apiConfig';
@@ -142,7 +143,8 @@ function downloadShiftType(){
                      getShiftType()
                 }}>Roster Template</SlMenuItem>
                 <a href={template}  download className='emp-temp-down-link'> <SlMenuItem>Employee Template</SlMenuItem></a>
-                <a href={twodaystemplate}  download className='emp-temp-down-link'> <SlMenuItem>Regularization Template</SlMenuItem></a>
+                <a href={twodaystemplate}  download className='emp-temp-down-link'> <SlMenuItem>Two Days Roster Template</SlMenuItem></a>
+                <a href={regulartemplate}  download className='emp-temp-down-link'> <SlMenuItem>Regularize Template</SlMenuItem></a>
                 <SlMenuItem onClick={()=>{
                      downloadShiftType()
                 }}>Shift/Reward Master</SlMenuItem>

@@ -14,7 +14,7 @@ function EmployeeMaster() {
   /* Backdrop state */
   const [openBackdrop, setOpenBackdrop] = useState(false);
   /* Backdrop state */
-
+	const [editDataIndex, setEditDataIndex] = useState()
   const [authVerificationData, setAuthVerificationData] = useState();
   const [empAadharName, setEmpAadharName] = useState();
   const [empAadharCode, setEmpAadharCode] = useState();
@@ -32,6 +32,7 @@ function EmployeeMaster() {
   const [col, setCol] = useState();
 
   /* update /add states */
+  const [deactivateDate, setDeactivateDate] = useState()
   const [bulkUploadFile, setBulkUploadFile] = useState();
   const [singleEmployeeUpload, setSingleEmployeeUpload] = useState({
     employee_id: "",
@@ -352,7 +353,8 @@ function EmployeeMaster() {
                     className="tag-row"
                     onClick={() => {
                       setDeactivateId(empData[dataIndex].employee_id);
-
+						setEmpUpdateData({...empUpdateData, name:empData[dataIndex].employee_name, location:empData[dataIndex].base_location})
+						getDivision(empData[dataIndex].base_location.split("_").join(" "));
                       setOpenUpdateEmp(true);
                     }}
                   >
@@ -617,10 +619,7 @@ function EmployeeMaster() {
   function sendDeactivate() {
    
 	const month_test = new Date().getMonth() + 1;
-	console.log( {
-        employee_id: deactivateId,
-		date:`${new Date().getFullYear()}-${month_test < 10 ? "0" + month_test : month_test}-${new Date().getDate()}`
-      });
+	
     axios({
       method: "post",
       url: `${baseurl.base_url}/mhere/delete-ceam-employee-master`,
@@ -629,7 +628,7 @@ function EmployeeMaster() {
       },
       data: {
         employee_id: deactivateId,
-		date:`${new Date().getFullYear()}-${month_test < 10 ? "0" + month_test : month_test}-${new Date().getDate()}`
+		date: deactivateDate || `${new Date().getFullYear()}-${month_test < 10 ? "0" + month_test : month_test}-${new Date().getDate()}`
       },
     })
       .then((res) => {
@@ -986,6 +985,9 @@ function EmployeeMaster() {
       </Backdrop>
       <SlDialog label="Deactivate" open={openDeactivate} onSlRequestClose={() => setOpenDeactivate(false)}>
         Deactivate Employee - {deactivateId}
+		<SlInput type="date" style={{maxWidth:'300px', marginTop:'20px'}} onSlChange={(e)=>{
+			setDeactivateDate(e.target.value)
+		}}></SlInput>
         <SlButton slot="footer" variant="warning" style={{ marginRight: "30px" }} onClick={sendDeactivate}>
           Deactiavte
         </SlButton>
@@ -995,7 +997,7 @@ function EmployeeMaster() {
       </SlDialog>
       <SlDialog label="Update" open={openUpdateEmp} onSlRequestClose={() => setOpenUpdateEmp(false)}>
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-          <SlInput onSlChange={(e)=>{
+          <SlInput value={empUpdateData.name} onSlChange={(e)=>{
 			setEmpUpdateData({ ...empUpdateData, name: e.target.value });
 		  }} label="Employee Name">
 
@@ -1004,9 +1006,10 @@ function EmployeeMaster() {
             className="add-emp-input"
             label="Select Location"
             hoist={true}
+			value={empUpdateData.location.split(" ").join("_")}
             onSlChange={(e) => {
               console.log(e.target.value);
-              getDivision(e.target.value);
+              getDivision(e.target.value.split("_").join(" "));
               setEmpUpdateData({ ...empUpdateData, location: e.target.value.split("_").join(" ") });
             }}
           >
