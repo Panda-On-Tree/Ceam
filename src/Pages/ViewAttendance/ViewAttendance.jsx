@@ -16,6 +16,7 @@ function ViewAttendance() {
 	}, []);
 
 	const muster = useRef(false);
+	const trainingmuster = useRef(false);
 	const card = useRef(false);
 	/* MAx date states */
 	const [searchMaxDate, setSearchMaxDate] = useState('');
@@ -80,6 +81,14 @@ function ViewAttendance() {
 			},
 		},
 		{
+			name: 'division',
+			label: 'Division',
+			options: {
+				filter: true,
+				sort: false,
+			},
+		},
+		{
 			name: 'vendor_name',
 			label: 'Vendor Name',
 			options: {
@@ -112,8 +121,24 @@ function ViewAttendance() {
 			},
 		},
 		{
+			name: 'InDevice',
+			label: 'In Device',
+			options: {
+				filter: true,
+				sort: false,
+			},
+		},
+		{
 			name: 'OUT',
 			label: 'Out Time',
+			options: {
+				filter: true,
+				sort: false,
+			},
+		},
+		{
+			name: 'OutDevice',
+			label: 'Out Device',
 			options: {
 				filter: true,
 				sort: false,
@@ -169,7 +194,7 @@ function ViewAttendance() {
 	};
 
 	function getAttendanceByEmployee() {
-		console.log(sendEmployeeData);
+		
 		axios({
 			method: 'post',
 			url: `${baseurl.base_url}/mhere/get-attendance-by-variable-new2`,
@@ -179,13 +204,14 @@ function ViewAttendance() {
 			data: sendEmployeeData,
 		})
 			.then((res) => {
-				//console.table(res.data.data);
+				//console.log(res.data.data);
 
 				let data = res.data.data;
 				data.forEach((item) => {
 					item.Work_Hours = `${parseInt(item.Work_Hours / 60)}H ${item.Work_Hours - parseInt(item.Work_Hours / 60) * 60}M`;
 					item.Comming_Late = item.Comming_Late ? `${parseInt(item.Comming_Late / 60)}H ${item.Comming_Late - parseInt(item.Comming_Late / 60) * 60}M` : null;
 					item.Leaving_Early = item.Leaving_Early ? `${parseInt(item.Leaving_Early / 60)}H ${item.Leaving_Early - parseInt(item.Leaving_Early / 60) * 60}M` : null;
+					item.Extra = `${parseInt(item.Extra / 60)}H ${item.Extra - parseInt(item.Extra / 60) * 60}M`;
 				});
 				setEmployeeData(data);
 			})
@@ -387,6 +413,35 @@ function ViewAttendance() {
 				muster.current.disabled = false;
 			});
 	}
+	function downloadTrainingMusterRoll() {
+		trainingmuster.current.disabled = true;
+		trainingmuster.current.innerText = 'Wait for Download';
+		const data = sendEmployeeData;
+    data.month = sendEmployeeData.start_date.split("-")[1] ||  new Date().getMonth()+1;
+    data.year = sendEmployeeData.start_date.split("-")[0] || new Date().getFullYear();
+    console.log(data)
+    
+		axios({
+			method: 'post',
+			url: `${baseurl.base_url}/mhere/get-training-muster-card-by-variable`,
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			data,
+		})
+			.then((res) => {
+				console.log(res.data.data);
+				trainingmuster.current.disabled = false;
+				trainingmuster.current.innerText = 'Download Training Muster Roll';
+				window.open(res.data.data, '_blank');
+			})
+			.catch((err) => {
+        toast.error(err.response.data.message);
+				trainingmuster.current.innerText = 'Download Training Muster Roll';
+				console.log(err);
+				trainingmuster.current.disabled = false;
+			});
+	}
 
 	return (
 		<div className="view-attendance-main">
@@ -502,8 +557,15 @@ function ViewAttendance() {
 						}}>
 						Download Muster Roll
 					</SlButton>
+					<SlButton
+						ref={trainingmuster}
+						onClick={() => {
+							downloadTrainingMusterRoll();
+						}}>
+						Download Training Muster Roll
+					</SlButton>
 				</div>
-				<div style={{ marginTop: '5vh', padding: '0px' }} className="table-ceam report-table">
+				<div style={{ marginTop: '5vh', padding: '0px' }} className="table-ceam report-table roster-table ">
 					<MUIDataTable title="Attendance Data" data={employeeData} columns={EmployeeColumn} options={options}></MUIDataTable>
 				</div>
 			</div>
