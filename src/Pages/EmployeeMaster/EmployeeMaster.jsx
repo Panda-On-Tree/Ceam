@@ -1,4 +1,4 @@
-import { SlButton, SlDialog, SlIcon, SlInput, SlMenuItem, SlSelect, SlTag, SlOption } from "@shoelace-style/shoelace/dist/react/index";
+import { SlButton, SlDialog, SlIcon, SlInput, SlMenuItem, SlSelect, SlTag } from "@shoelace-style/shoelace/dist/react/index";
 import axios from "axios";
 import MUIDataTable from "mui-datatables";
 import React, { useState } from "react";
@@ -1015,9 +1015,9 @@ function EmployeeMaster() {
           >
             {plantList?.map((item, i) => {
               return (
-                <SlOption key={`${i}plant`} value={item.plant.split(" ").join("_")}>
+                <SlMenuItem key={`${i}plant`} value={item.plant.split(" ").join("_")}>
                   {item.plant}
-                </SlOption>
+                </SlMenuItem>
               );
             })}
           </SlSelect>
@@ -1031,9 +1031,9 @@ function EmployeeMaster() {
           >
             {divisionList?.map((item, i) => {
               return (
-                <SlOption key={`${i}divisionu`} value={item.division.split(" ").join("_")}>
+                <SlMenuItem key={`${i}divisionu`} value={item.division.split(" ").join("_")}>
                   {item.division}
-                </SlOption>
+                </SlMenuItem>
               );
             })}
           </SlSelect>
