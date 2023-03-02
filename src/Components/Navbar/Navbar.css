@@ -5,19 +5,19 @@
     position: fixed;
     z-index: 990;
     min-width: 100%;
-    min-height: 11vh;
+   
     border-bottom: 1px solid rgba(238, 238, 238, 0.486);
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.123);
     background-color: white;
 }
 .navbar{
     min-width: 100%;
-    min-height: 11vh;
+    min-height: 80px;
     position: relative;
     z-index: 99;
 }
 .navbar-inner{
-    min-height: 11vh;
+    
     min-width:90%;
     align-items: center;
     display: flex;
@@ -43,14 +43,14 @@
     color: black;
 }
 .navbar-logo{
-    max-height:10vh;
-    min-width: 6vw;
+    height: 80px;
+    min-width: 75px;
     display: flex;
     align-items: center;
     gap: 20px;
 }
 .navbar-logo> img{
-    height: 11vh;
+    height: 65px;
 }
 
 .navbar-head{

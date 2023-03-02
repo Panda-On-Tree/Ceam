@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Ceam.css';
-import { SlButton, SlDialog, SlInput, SlMenuItem, SlSelect } from '@shoelace-style/shoelace/dist/react/index.js';
+import { SlButton, SlDialog, SlInput, SlOption, SlSelect } from '@shoelace-style/shoelace/dist/react/index.js';
 import thirtyonedays from './templates/31daysTemplate.xlsx';
 import thirtydays from './templates/30daysTemplate.xlsx';
 import twentyeightdays from './templates/28daysTemplate.xlsx';
@@ -520,14 +520,14 @@ function CeamRoster() {
 					style={{ marginBottom: '15px' }}
 					label="Plant"
 					onSlChange={(e) => {
-						setPlantName(e.target.value);
-						getDivision(e.target.value);
+						setPlantName(e.target.value.split("_").join(" "));
+						getDivision(e.target.value.split("_").join(" "));
 					}}>
 					{plantList?.map((item, i) => {
 						return (
-							<SlMenuItem key={`${i}plant`} value={item.plant}>
+							<SlOption key={`${i}plant`} value={item.plant.split(" ").join("_")}>
 								{item.plant}
-							</SlMenuItem>
+							</SlOption>
 						);
 					})}
 				</SlSelect>
@@ -535,13 +535,13 @@ function CeamRoster() {
 					style={{ marginBottom: '15px' }}
 					label="Division"
 					onSlChange={(e) => {
-						setDivision(e.target.value);
+						setDivision(e.target.value.split("_").join(" "));
 					}}>
 					{divisionList?.map((item, i) => {
 						return (
-							<SlMenuItem key={`${i}division`} value={item.division}>
+							<SlOption key={`${i}division`} value={item.division.split(" ").join("_")}>
 								{item.division}
-							</SlMenuItem>
+							</SlOption>
 						);
 					})}
 				</SlSelect>

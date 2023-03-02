@@ -1,4 +1,4 @@
-import { SlButton, SlDetails, SlDialog, SlInput, SlMenuItem, SlSelect } from "@shoelace-style/shoelace/dist/react/index";
+import { SlButton, SlDetails, SlDialog, SlInput,  SlOption, SlSelect } from "@shoelace-style/shoelace/dist/react/index";
 import "./ViewAttendance.css";
 import React, { useRef, useState } from "react";
 import MUIDataTable from "mui-datatables";
@@ -53,9 +53,6 @@ function ViewAttendance() {
     plant_name: "",
   });
   const [plantData, setPlantData] = useState();
-
-  const tableData = [];
-  const column = [];
   const EmployeeColumn = [
     {
       name: "employee_id",
@@ -492,14 +489,16 @@ function ViewAttendance() {
             className="add-emp-input"
             label="Select Category"
             onSlChange={(e) => {
-              setSendEmployeeData({ ...sendEmployeeData, category: e.target.value });
+              console.log(e.target.value.split("_").join(" "));
+              setSendEmployeeData({ ...sendEmployeeData, category: e.target.value.split("_").join(" ") });
             }}
+           
           >
             {categoryList?.map((item, i) => {
               return (
-                <SlMenuItem key={`${i}cat`} value={item.category}>
+                <SlOption key={`${i}cat`} value={item.category.split(" ").join("_")}>
                   {item.category}
-                </SlMenuItem>
+                </SlOption>
               );
             })}
           </SlSelect>
@@ -507,14 +506,14 @@ function ViewAttendance() {
             className="add-emp-input"
             label="Select Vendor Code"
             onSlChange={(e) => {
-              setSendEmployeeData({ ...sendEmployeeData, vendor: JSON.parse(e.target.value).vendor_code });
+              setSendEmployeeData({ ...sendEmployeeData, vendor: e.target.value.split("_").join(" ") });
             }}
           >
             {vendorList?.map((item, i) => {
               return (
-                <SlMenuItem key={`${i}ven`} value={JSON.stringify(item)}>
+                <SlOption key={`${i}ven`} value={item.vendor_code.split(" ").join("_")}>
                   {item.vendor_name} ( {item.vendor_code} )
-                </SlMenuItem>
+                </SlOption>
               );
             })}
           </SlSelect>
@@ -522,14 +521,14 @@ function ViewAttendance() {
             className="add-emp-input"
             label="Select Department"
             onSlChange={(e) => {
-              setSendEmployeeData({ ...sendEmployeeData, department: e.target.value });
+              setSendEmployeeData({ ...sendEmployeeData, department: e.target.value.split("_").join(" ") });
             }}
           >
             {deptList?.map((item, i) => {
               return (
-                <SlMenuItem key={`${i}dept`} value={item.department}>
+                <SlOption key={`${i}dept`} value={item.department.split(" ").join("_")}>
                   {item.department}
-                </SlMenuItem>
+                </SlOption>
               );
             })}
           </SlSelect>
@@ -538,14 +537,14 @@ function ViewAttendance() {
             label="Select Plant"
             onSlChange={(e) => {
               getDivision(e.target.value);
-              setSendEmployeeData({ ...sendEmployeeData, plant: e.target.value });
+              setSendEmployeeData({ ...sendEmployeeData, plant: e.target.value.split("_").join(" ") });
             }}
           >
             {plantList?.map((item, i) => {
               return (
-                <SlMenuItem key={`${i}plant`} value={item.plant}>
+                <SlOption key={`${i}plant`} value={item.plant.split(" ").join("_")}>
                   {item.plant}
-                </SlMenuItem>
+                </SlOption>
               );
             })}
           </SlSelect>
@@ -553,14 +552,14 @@ function ViewAttendance() {
             className="add-emp-input"
             label="Select Division"
             onSlChange={(e) => {
-              setSendEmployeeData({ ...sendEmployeeData, division: e.target.value });
+              setSendEmployeeData({ ...sendEmployeeData, division: e.target.value.split("_").join(" ") });
             }}
           >
             {divisionList?.map((item, i) => {
               return (
-                <SlMenuItem key={`${i}divisionu`} value={item.division}>
+                <SlOption key={`${i}divisionu`} value={item.division.split(" ").join("_")}>
                   {item.division}
-                </SlMenuItem>
+                </SlOption>
               );
             })}
           </SlSelect>
@@ -571,8 +570,8 @@ function ViewAttendance() {
               setSendEmployeeData({ ...sendEmployeeData, gender: e.target.value });
             }}
           >
-            <SlMenuItem value="M">Male</SlMenuItem>
-            <SlMenuItem value="F">Female</SlMenuItem>
+            <SlOption value="M">Male</SlOption>
+            <SlOption value="F">Female</SlOption>
           </SlSelect>
           <SlInput
             type="date"
