@@ -259,6 +259,14 @@ function EmployeeMaster() {
 			},
 		},
 		{
+			name: 'DOL',
+			label: 'DOL',
+			options: {
+				filter: true,
+				sort: false,
+			},
+		},
+		{
 			name: 'active_flag',
 			label: 'Active',
 			options: {
@@ -266,7 +274,7 @@ function EmployeeMaster() {
 				sort: false,
 				customBodyRenderLite: (dataIndex, rowIndex) => {
 					//console.log(dataIndex);
-					return <div>{empData[dataIndex].active_flag ? 'true' : 'false'}</div>;
+					return <div>{empData[dataIndex].active_flag === "Active" ? 'true' : 'false'}</div>;
 				},
 			},
 		},
